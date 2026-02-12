@@ -49,6 +49,7 @@ export class CardGalleryComponent implements OnInit {
   currentImageStyle: ImageStyle = 'pixel';
   imageStyleOptions: { label: string; value: ImageStyle }[] = [
     { label: 'Pixel Art', value: 'pixel' },
+    { label: 'Pixel Art v2', value: 'pixel-v2' },
     { label: 'Icône', value: 'icone' },
   ];
 
