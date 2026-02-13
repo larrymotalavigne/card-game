@@ -1,0 +1,78 @@
+@if (state) {
+  <div class="game-board">
+    <!-- Phase Bar -->
+    <app-phase-bar
+      [state]="state"
+      (advance)="gameService.advancePhase()"
+      (toggleLog)="toggleLog()"
+    />
+
+    <!-- Opponent Area (top) -->
+    <app-player-area
+      [player]="state.activePlayerId === state.player1.id ? state.player2 : state.player1"
+      [isActive]="false"
+      [state]="state"
+      class="opponent-area"
+    />
+
+    <!-- Divider -->
+    <div class="board-divider">
+      <span class="divider-info">Tour {{ state.turnNumber }}</span>
+    </div>
+
+    <!-- Active Player Area (bottom) -->
+    <app-player-area
+      [player]="state.activePlayerId === state.player1.id ? state.player1 : state.player2"
+      [isActive]="true"
+      [state]="state"
+      class="active-area"
+    />
+
+    <!-- Mulligan Overlay -->
+    @if (isMulliganPhase) {
+      <app-mulligan-overlay [state]="state" />
+    }
+
+    <!-- Combat Overlay -->
+    @if (showCombatOverlay) {
+      <app-combat-overlay [state]="state" />
+    }
+
+    <!-- Turn Transition -->
+    @if (showTransition) {
+      <app-turn-transition
+        [playerName]="state.activePlayerId === state.player1.id ? state.player1.name : state.player2.name"
+        [turnNumber]="state.turnNumber"
+        (dismiss)="onTransitionDismiss()"
+      />
+    }
+
+    <!-- Game Log Sidebar -->
+    <app-game-log [log]="state.log" [visible]="showLog" (visibleChange)="showLog = $event" />
+
+    <!-- Manual Actions -->
+    <app-manual-actions [state]="state" />
+
+    <!-- Victory Dialog -->
+    <p-dialog
+      [(visible)]="showVictory"
+      [modal]="true"
+      [closable]="false"
+      header="Partie terminée !"
+      [style]="{ width: '400px' }"
+    >
+      <div class="victory-content">
+        <i class="pi pi-trophy victory-icon"></i>
+        <h2>{{ getWinnerName() }} remporte la partie !</h2>
+        <p>
+          {{ state.player1.name }} : {{ state.player1.reputation }} PV
+          &nbsp;—&nbsp;
+          {{ state.player2.name }} : {{ state.player2.reputation }} PV
+        </p>
+      </div>
+      <ng-template #footer>
+        <p-button label="Nouvelle Partie" icon="pi pi-refresh" (onClick)="exitGame()" />
+      </ng-template>
+    </p-dialog>
+  </div>
+}

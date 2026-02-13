@@ -1,0 +1,75 @@
+<div class="player-area" [class.active]="isActive" [class.opponent]="!isActive">
+  <!-- Player Info -->
+  <div class="player-info" [class.p1]="isP1" [class.p2]="!isP1">
+    <span class="player-name">{{ player.name }}</span>
+    <span class="player-stat reputation">
+      <i class="pi pi-heart-fill"></i> {{ player.reputation }}
+      @if (damagePopup !== null) {
+        <span class="damage-popup">-{{ damagePopup }}</span>
+      }
+    </span>
+    <span class="player-stat budget">
+      <i class="pi pi-wallet"></i> {{ player.budgetRemaining }}/{{ player.budgetMax }}
+    </span>
+    <span class="player-stat deck-count">
+      <i class="pi pi-database"></i> {{ player.deck.length }}
+    </span>
+    <span class="player-stat graveyard-count clickable" (click)="openGraveyard()">
+      <i class="pi pi-trash"></i> {{ player.graveyard.length }}
+    </span>
+  </div>
+
+  <!-- Field Zone -->
+  <app-field-zone
+    [cards]="player.field"
+    [isActive]="isActive"
+    [state]="state"
+    class="field-section"
+  />
+
+  <!-- Hand Zone -->
+  <app-hand-zone
+    [cards]="player.hand"
+    [isActive]="isActive"
+    [state]="state"
+    class="hand-section"
+  />
+</div>
+
+<!-- Graveyard Dialog -->
+<p-dialog
+  [(visible)]="showGraveyard"
+  [modal]="true"
+  header="Cimetière"
+  [style]="{ width: '80vw', maxWidth: '700px' }"
+  [breakpoints]="{ '480px': '95vw' }"
+>
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">{{ state.player1.name }} ({{ state.player1.graveyard.length }})</p-tab>
+      <p-tab value="1">{{ state.player2.name }} ({{ state.player2.graveyard.length }})</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <div class="graveyard-grid">
+          @for (card of state.player1.graveyard; track card.instanceId) {
+            <app-game-card [instance]="card" [showStats]="true" />
+          }
+          @if (state.player1.graveyard.length === 0) {
+            <p class="graveyard-empty">Aucune carte détruite</p>
+          }
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <div class="graveyard-grid">
+          @for (card of state.player2.graveyard; track card.instanceId) {
+            <app-game-card [instance]="card" [showStats]="true" />
+          }
+          @if (state.player2.graveyard.length === 0) {
+            <p class="graveyard-empty">Aucune carte détruite</p>
+          }
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</p-dialog>

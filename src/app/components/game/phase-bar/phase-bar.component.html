@@ -1,0 +1,41 @@
+<div class="phase-bar">
+  <div class="phase-left">
+    <span class="turn-badge">Tour {{ state.turnNumber }}</span>
+    <span class="active-player" [class.p1]="state.activePlayerId === state.player1.id" [class.p2]="state.activePlayerId === state.player2.id">
+      {{ activePlayer.name }}
+    </span>
+  </div>
+
+  <div class="phase-steps">
+    @for (phase of phases; track phase) {
+      <div
+        class="phase-step"
+        [class.current]="isCurrentPhase(phase)"
+        [class.past]="isPastPhase(phase)"
+      >
+        <span class="phase-full">{{ phase }}</span>
+        <span class="phase-short">{{ getShortLabel(phase) }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="phase-right">
+    <p-button
+      icon="pi pi-list"
+      [rounded]="true"
+      [text]="true"
+      severity="secondary"
+      (onClick)="toggleLog.emit()"
+      pTooltip="Journal"
+    />
+    @if (canAdvance) {
+      <p-button
+        label="Phase suivante"
+        icon="pi pi-arrow-right"
+        size="small"
+        (onClick)="advance.emit()"
+        severity="info"
+      />
+    }
+  </div>
+</div>

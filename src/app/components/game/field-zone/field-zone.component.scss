@@ -1,0 +1,53 @@
+.field-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 0.5rem;
+
+  &.attack-mode {
+    border-color: rgba(244, 67, 54, 0.3);
+  }
+
+  &.block-mode {
+    border-color: rgba(33, 150, 243, 0.3);
+  }
+}
+
+.field-cards {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  overflow-x: auto;
+
+  .field-card {
+    --card-scale: 0.65;
+  }
+}
+
+.empty-field {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .field-cards .field-card {
+    --card-scale: 0.50;
+  }
+}
+
+@media (max-width: 480px) {
+  .field-cards {
+    flex-wrap: wrap;
+    overflow-y: auto;
+
+    .field-card {
+      --card-scale: 0.40;
+    }
+  }
+}

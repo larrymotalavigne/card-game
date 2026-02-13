@@ -7,10 +7,12 @@ import {
   DeckExport,
   DeckStats,
   DeckValidation,
+  StarterDeck,
   DECK_MAX_COPIES,
   DECK_MAX_LEGENDARY_COPIES,
   DECK_MIN_CARDS,
 } from '../models/deck.model';
+import { STARTER_DECKS } from '../data/starter-decks';
 
 const STORAGE_KEY = 'jobwars-decks';
 
@@ -31,8 +33,26 @@ export class DeckService {
     return this.loadDecks();
   }
 
+  getStarterDecks(): StarterDeck[] {
+    return STARTER_DECKS;
+  }
+
   getDeckById(id: string): Deck | undefined {
-    return this.loadDecks().find(d => d.id === id);
+    const local = this.loadDecks().find(d => d.id === id);
+    if (local) return local;
+
+    // Fallback to starter decks
+    const starter = STARTER_DECKS.find(s => s.id === id);
+    if (starter) {
+      return {
+        id: starter.id,
+        name: starter.name,
+        entries: starter.entries,
+        createdAt: '',
+        updatedAt: '',
+      };
+    }
+    return undefined;
   }
 
   createDeck(name: string): Deck {

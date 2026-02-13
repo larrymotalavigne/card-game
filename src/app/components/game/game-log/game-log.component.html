@@ -1,0 +1,22 @@
+<p-drawer
+  [(visible)]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  position="right"
+  header="Journal de partie"
+  [style]="{ width: '350px' }"
+>
+  <div class="log-entries" #logList>
+    @for (entry of log; track entry.timestamp) {
+      <div class="log-entry">
+        <div class="log-meta">
+          <span class="log-turn">T{{ entry.turn }}</span>
+          <span class="log-phase" [style.color]="getPhaseColor(entry.phase)">{{ entry.phase }}</span>
+        </div>
+        <div class="log-message">{{ entry.message }}</div>
+      </div>
+    }
+    @if (log.length === 0) {
+      <div class="log-empty">Aucune action enregistrée.</div>
+    }
+  </div>
+</p-drawer>

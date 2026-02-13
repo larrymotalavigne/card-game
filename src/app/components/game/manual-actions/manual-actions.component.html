@@ -1,0 +1,140 @@
+<!-- FAB Button -->
+<p-button
+  icon="pi pi-cog"
+  [rounded]="true"
+  severity="help"
+  (onClick)="open()"
+  class="manual-fab"
+  pTooltip="Actions manuelles"
+/>
+
+<!-- Dialog -->
+<p-dialog
+  [(visible)]="visible"
+  header="Actions Manuelles (Mode Plateau)"
+  [style]="{ width: '480px' }"
+  [modal]="true"
+>
+  <div class="manual-content">
+    <!-- Player selector -->
+    <div class="player-selector">
+      <label>Joueur cible</label>
+      <p-select
+        [options]="playerOptions"
+        [(ngModel)]="selectedPlayerId"
+        optionLabel="label"
+        optionValue="value"
+        [style]="{ width: '100%' }"
+      />
+    </div>
+
+    <p-accordion [multiple]="true">
+      <!-- Reputation -->
+      <p-accordionpanel value="rep">
+        <p-accordionheader>Réputation</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-row">
+            <p-inputnumber [(ngModel)]="repDelta" [showButtons]="true" [style]="{ width: '120px' }" />
+            <p-button label="Appliquer" icon="pi pi-heart" size="small" (onClick)="adjustReputation(repDelta)" severity="danger" />
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+
+      <!-- Budget -->
+      <p-accordionpanel value="budget">
+        <p-accordionheader>Budget</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-row">
+            <p-inputnumber [(ngModel)]="budgetDelta" [showButtons]="true" [style]="{ width: '120px' }" />
+            <p-button label="Appliquer" icon="pi pi-wallet" size="small" (onClick)="adjustBudget(budgetDelta)" severity="warn" />
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+
+      <!-- Draw Cards -->
+      <p-accordionpanel value="draw">
+        <p-accordionheader>Piocher des cartes</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-row">
+            <p-inputnumber [(ngModel)]="drawCount" [min]="1" [max]="10" [showButtons]="true" [style]="{ width: '120px' }" />
+            <p-button label="Piocher" icon="pi pi-download" size="small" (onClick)="drawCards()" />
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+
+      <!-- Move Card -->
+      <p-accordionpanel value="move">
+        <p-accordionheader>Déplacer une carte</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-col">
+            <p-select
+              [options]="allCards"
+              [(ngModel)]="selectedCardId"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Carte..."
+              [style]="{ width: '100%' }"
+              [filter]="true"
+            />
+            <p-select
+              [options]="zoneOptions"
+              [(ngModel)]="targetZone"
+              optionLabel="label"
+              optionValue="value"
+              [style]="{ width: '100%' }"
+            />
+            <p-button label="Déplacer" icon="pi pi-arrow-right" size="small" (onClick)="moveCard()" />
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+
+      <!-- Add Modifier -->
+      <p-accordionpanel value="mod">
+        <p-accordionheader>Ajouter un modificateur</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-col">
+            <p-select
+              [options]="allFieldCards"
+              [(ngModel)]="selectedCardId"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Carte sur le terrain..."
+              [style]="{ width: '100%' }"
+            />
+            <div class="mod-row">
+              <span>Productivité</span>
+              <p-inputnumber [(ngModel)]="modProd" [showButtons]="true" [style]="{ width: '100px' }" />
+            </div>
+            <div class="mod-row">
+              <span>Résilience</span>
+              <p-inputnumber [(ngModel)]="modRes" [showButtons]="true" [style]="{ width: '100px' }" />
+            </div>
+            <input pInputText [(ngModel)]="modDesc" placeholder="Description..." />
+            <p-button label="Ajouter" icon="pi pi-plus" size="small" (onClick)="addModifier()" />
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+
+      <!-- Other -->
+      <p-accordionpanel value="other">
+        <p-accordionheader>Autres</p-accordionheader>
+        <p-accordioncontent>
+          <div class="action-col">
+            <p-button label="Mélanger le deck" icon="pi pi-refresh" size="small" (onClick)="shuffleDeck()" severity="secondary" />
+            <div class="destroy-row">
+              <p-select
+                [options]="allFieldCards"
+                [(ngModel)]="selectedCardId"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Carte à détruire..."
+                [style]="{ width: '100%' }"
+              />
+              <p-button label="Détruire" icon="pi pi-trash" size="small" (onClick)="destroyCard()" severity="danger" />
+            </div>
+          </div>
+        </p-accordioncontent>
+      </p-accordionpanel>
+    </p-accordion>
+  </div>
+</p-dialog>

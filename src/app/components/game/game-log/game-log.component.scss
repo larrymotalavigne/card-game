@@ -1,0 +1,46 @@
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.log-entry {
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.5rem;
+  font-size: 0.82rem;
+}
+
+.log-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.log-turn {
+  font-weight: 700;
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.log-phase {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.log-message {
+  color: var(--p-text-color);
+  line-height: 1.35;
+}
+
+.log-empty {
+  color: var(--p-text-muted-color);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}

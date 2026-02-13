@@ -1,0 +1,177 @@
+.lobby-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.lobby-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--p-text-color);
+
+  i {
+    margin-right: 0.5rem;
+    color: var(--p-primary-color);
+  }
+}
+
+// --- Starter Decks ---
+.starter-section {
+  margin-bottom: 2rem;
+}
+
+.starter-title {
+  font-size: 1.2rem;
+  color: var(--p-text-muted-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.starter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.starter-card {
+  background: var(--p-surface-100);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--p-primary-color);
+  }
+}
+
+.starter-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.starter-desc {
+  font-size: 0.75rem;
+  color: var(--p-text-muted-color);
+  line-height: 1.3;
+}
+
+.starter-domains {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.starter-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+// --- Player Setup ---
+.lobby-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.player-header {
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  text-align: center;
+
+  &.p1 {
+    background: linear-gradient(135deg, #1a73e8, #174ea6);
+  }
+
+  &.p2 {
+    background: linear-gradient(135deg, #c62828, #b71c1c);
+  }
+}
+
+.player-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.validation-errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lobby-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.no-decks {
+  text-align: center;
+  padding: 2rem;
+  color: var(--p-text-muted-color);
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .lobby-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .lobby-container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .lobby-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .lobby-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .starter-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .starter-card {
+    padding: 0.5rem;
+  }
+
+  .starter-name {
+    font-size: 0.8rem;
+  }
+
+  .starter-desc {
+    font-size: 0.7rem;
+  }
+}

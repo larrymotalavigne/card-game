@@ -1,0 +1,17 @@
+<div class="transition-overlay">
+  <div class="transition-content">
+    <div class="turn-label">Tour {{ turnNumber }}</div>
+    <h1 class="player-turn">Au tour de {{ playerName }}</h1>
+    @if (ready) {
+      <p-button
+        label="C'est parti !"
+        icon="pi pi-play"
+        (onClick)="dismiss.emit()"
+        size="large"
+        severity="success"
+      />
+    } @else {
+      <div class="countdown">{{ countdown }}</div>
+    }
+  </div>
+</div>

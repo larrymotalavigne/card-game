@@ -1,0 +1,42 @@
+<div class="mulligan-overlay">
+  @if (waitingForSecondPlayer) {
+    <!-- Transition screen between players -->
+    <div class="mulligan-panel transition-panel">
+      <h3>Passez à {{ nextPlayerName }}</h3>
+      <p class="mulligan-hint">Ne regardez pas l'écran !</p>
+      <p-button label="Prêt" icon="pi pi-check" (onClick)="dismissTransition()" severity="success" size="large" />
+    </div>
+  } @else {
+    <div class="mulligan-panel">
+      <h3>Mulligan — {{ currentPlayer.name }}</h3>
+      <p class="mulligan-hint">Sélectionnez les cartes à remplacer, puis confirmez.</p>
+
+      <div class="mulligan-cards">
+        @for (card of currentHand; track card.instanceId) {
+          <app-game-card
+            [instance]="card"
+            [selectable]="true"
+            [selected]="isSelected(card.instanceId)"
+            (cardClick)="toggleCard($event)"
+          />
+        }
+      </div>
+
+      <div class="mulligan-actions">
+        <p-button
+          [label]="'Remplacer (' + selectedCards.size + ')'"
+          icon="pi pi-refresh"
+          (onClick)="replaceCards()"
+          [disabled]="selectedCards.size === 0"
+          severity="warn"
+        />
+        <p-button
+          label="Garder la main"
+          icon="pi pi-check"
+          (onClick)="keepHand()"
+          severity="success"
+        />
+      </div>
+    </div>
+  }
+</div>

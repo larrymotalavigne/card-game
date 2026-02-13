@@ -1,0 +1,131 @@
+<div class="combat-overlay">
+  <!-- Attack Phase -->
+  @if (isAttackPhase) {
+    <div class="combat-panel">
+      <h3>Choisissez vos attaquants</h3>
+      <p class="combat-hint">Cliquez sur vos Métiers pour les déclarer comme attaquants</p>
+      <div class="combat-cards">
+        @for (card of attackerJobs; track card.instanceId) {
+          <app-game-card
+            [instance]="card"
+            [selectable]="canAttack(card.instanceId)"
+            [selected]="isAttacking(card.instanceId)"
+            (cardClick)="toggleAttacker($event)"
+          />
+        }
+      </div>
+      <div class="combat-actions">
+        <p-button
+          label="Confirmer les attaquants"
+          icon="pi pi-check"
+          (onClick)="confirmAttackers()"
+          severity="danger"
+        />
+        <p-button
+          label="Passer le combat"
+          icon="pi pi-forward"
+          (onClick)="skipCombat()"
+          severity="secondary"
+        />
+      </div>
+    </div>
+  }
+
+  <!-- Block Phase -->
+  @if (isBlockPhase) {
+    <div class="combat-panel">
+      <h3>Assignez vos bloqueurs</h3>
+      <p class="combat-hint">
+        @if (!selectedBlocker) {
+          Cliquez sur un de vos Métiers pour le sélectionner comme bloqueur
+        } @else {
+          Maintenant, cliquez sur un attaquant adverse à bloquer
+        }
+      </p>
+
+      <div class="combat-matchups">
+        <div class="matchup-section">
+          <h4>Attaquants ({{ attacker.name }})</h4>
+          <div class="combat-cards">
+            @for (card of attackerCards; track card.instanceId) {
+              <div class="matchup-slot">
+                <app-game-card
+                  [instance]="card"
+                  [selectable]="!!selectedBlocker"
+                  (cardClick)="assignBlock(card.instanceId)"
+                />
+                @if (getBlockerFor(card.instanceId); as blocker) {
+                  <div class="blocker-arrow">
+                    <i class="pi pi-arrow-up"></i>
+                  </div>
+                  <app-game-card [instance]="blocker" />
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="matchup-section">
+          <h4>Vos bloqueurs disponibles ({{ defender.name }})</h4>
+          <div class="combat-cards">
+            @for (card of defenderJobs; track card.instanceId) {
+              <app-game-card
+                [instance]="card"
+                [selectable]="canBlock(card.instanceId)"
+                [selected]="selectedBlocker === card.instanceId || isBlocking(card.instanceId)"
+                (cardClick)="selectBlocker(card.instanceId)"
+              />
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="combat-actions">
+        <p-button
+          label="Confirmer les bloqueurs"
+          icon="pi pi-check"
+          (onClick)="confirmBlockers()"
+          severity="info"
+        />
+        <p-button
+          label="Ne pas bloquer"
+          icon="pi pi-forward"
+          (onClick)="confirmBlockers()"
+          severity="secondary"
+        />
+      </div>
+    </div>
+  }
+
+  <!-- Damage Phase -->
+  @if (isDamagePhase) {
+    <div class="combat-panel">
+      <h3>Résolution des dégâts</h3>
+      <div class="damage-matchups">
+        @for (card of attackerCards; track card.instanceId) {
+          <div class="damage-row">
+            <app-game-card [instance]="card" />
+            @if (getBlockerFor(card.instanceId); as blocker) {
+              <span class="versus">VS</span>
+              <app-game-card [instance]="blocker" />
+            } @else {
+              <span class="versus unblocked">
+                <i class="pi pi-arrow-right"></i>
+                {{ defender.name }}
+              </span>
+            }
+          </div>
+        }
+      </div>
+      <div class="combat-actions">
+        <p-button
+          label="Résoudre le combat"
+          icon="pi pi-bolt"
+          (onClick)="resolveCombat()"
+          severity="warn"
+          size="large"
+        />
+      </div>
+    </div>
+  }
+</div>

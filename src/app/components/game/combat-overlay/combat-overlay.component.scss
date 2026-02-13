@@ -1,0 +1,143 @@
+.combat-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.combat-panel {
+  background: #1e1e2e;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: center;
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+    color: #fff;
+  }
+}
+
+.combat-hint {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.combat-cards {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.combat-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.combat-matchups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.matchup-section {
+  h4 {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.matchup-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.blocker-arrow {
+  color: #2196f3;
+  font-size: 1.2rem;
+}
+
+.damage-matchups {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.damage-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.versus {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #f44336;
+  padding: 0 0.5rem;
+
+  &.unblocked {
+    color: #ff9800;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .combat-panel {
+    padding: 1rem;
+    max-width: 95vw;
+
+    h3 {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .combat-panel {
+    padding: 0.75rem;
+
+    h3 {
+      font-size: 1rem;
+    }
+  }
+
+  .combat-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .damage-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .versus {
+    font-size: 0.9rem;
+  }
+}

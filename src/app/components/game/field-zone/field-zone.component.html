@@ -1,0 +1,17 @@
+<div class="field-zone" [class.attack-mode]="isAttackPhase" [class.block-mode]="isBlockPhase">
+  <div class="field-cards">
+    @for (card of cards; track card.instanceId) {
+      <app-game-card
+        [instance]="card"
+        [selectable]="isSelectable(card)"
+        [selected]="isSelected(card)"
+        [justPlayed]="card.summonedThisTurn"
+        (cardClick)="onCardClick($event)"
+        class="field-card"
+      />
+    }
+  </div>
+  @if (cards.length === 0) {
+    <div class="empty-field">Terrain vide</div>
+  }
+</div>

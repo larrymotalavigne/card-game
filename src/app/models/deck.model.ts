@@ -1,3 +1,5 @@
+import { Domain } from './card.model';
+
 export const DECK_MIN_CARDS = 40;
 export const DECK_MAX_COPIES = 3;
 export const DECK_MAX_LEGENDARY_COPIES = 1;
@@ -13,6 +15,14 @@ export interface Deck {
   entries: DeckEntry[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface StarterDeck {
+  id: string;
+  name: string;
+  description: string;
+  entries: DeckEntry[];
+  domains: Domain[];
 }
 
 export interface DeckStats {

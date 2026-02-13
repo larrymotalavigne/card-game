@@ -1,0 +1,147 @@
+.player-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.25rem 0.5rem;
+  gap: 0.25rem;
+
+  &.opponent {
+    flex-direction: column-reverse;
+  }
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+
+  &.p1 { border-left: 3px solid #64b5f6; }
+  &.p2 { border-left: 3px solid #ef5350; }
+}
+
+.player-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.player-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+
+  i {
+    font-size: 0.75rem;
+  }
+
+  &.reputation i { color: #ef5350; }
+  &.budget i { color: #ffd54f; }
+  &.deck-count i { color: #90caf9; }
+  &.graveyard-count i { color: #9e9e9e; }
+
+  &.clickable {
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.damage-popup {
+  position: absolute;
+  top: -20px;
+  right: -5px;
+  color: #f44336;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: 0 0 6px rgba(244, 67, 54, 0.6);
+  animation: floatUp 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-25px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+.field-section {
+  flex: 1.2;
+  min-height: 0;
+}
+
+.hand-section {
+  flex: 0.8;
+  min-height: 0;
+}
+
+.graveyard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.graveyard-empty {
+  color: var(--p-text-muted-color);
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .player-info {
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .player-name {
+    font-size: 0.8rem;
+    min-width: auto;
+  }
+
+  .player-stat {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-info {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .player-name {
+    width: 100%;
+    font-size: 0.8rem;
+    min-width: auto;
+  }
+
+  .player-stat {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+}

@@ -1,0 +1,166 @@
+:host {
+  --card-scale: 0.55;
+}
+
+.game-card-wrapper {
+  position: relative;
+  transform: scale(var(--card-scale));
+  transform-origin: top center;
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 8px;
+
+  &.selectable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(calc(var(--card-scale) + 0.03));
+      z-index: 5;
+    }
+  }
+
+  &.tapped {
+    transform: scale(var(--card-scale)) rotate(90deg);
+    transform-origin: center center;
+  }
+
+  &.face-down {
+    .card-back {
+      width: 63mm;
+      height: 88mm;
+      background: linear-gradient(135deg, #2c3e50, #1a252f);
+      border: 2px solid #444;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  &.summoning-sick:not(.face-down) {
+    opacity: 0.65;
+  }
+
+  &.attacking {
+    box-shadow: 0 0 12px 3px rgba(244, 67, 54, 0.6);
+  }
+
+  &.blocking {
+    box-shadow: 0 0 12px 3px rgba(33, 150, 243, 0.6);
+  }
+
+  &.affordable {
+    box-shadow: 0 0 10px 2px rgba(76, 175, 80, 0.5);
+  }
+
+  &.selected {
+    box-shadow: 0 0 14px 4px rgba(255, 215, 0, 0.7);
+  }
+
+  &.just-played {
+    animation: cardPlay 0.5s ease-out;
+  }
+}
+
+@keyframes cardPlay {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.8);
+  }
+  100% {
+    transform: scale(var(--card-scale));
+    opacity: 1;
+    box-shadow: none;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 3;
+
+  &.attack-overlay {
+    background: #f44336;
+    color: #fff;
+  }
+
+  &.block-overlay {
+    background: #2196f3;
+    color: #fff;
+  }
+
+  &.sick-overlay {
+    top: auto;
+    bottom: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffd54f;
+    font-size: 0.65rem;
+    width: auto;
+    padding: 0 6px;
+    border-radius: 4px;
+  }
+}
+
+.modified-stats {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffd54f;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  z-index: 3;
+}
+
+.keyword-badges {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 3;
+}
+
+.kw-badge {
+  font-size: 0.55rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.7);
+
+  &[data-kw="Première Frappe"] { background: #e65100; }
+  &[data-kw="Célérité"] { background: #2e7d32; }
+  &[data-kw="Construction"] { background: #795548; }
+  &[data-kw="Portée"] { background: #1565c0; }
+}
+
+@media (max-width: 768px) {
+  :host {
+    --card-scale: 0.45;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    --card-scale: 0.35;
+  }
+}

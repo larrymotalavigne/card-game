@@ -1,0 +1,56 @@
+<div
+  class="game-card-wrapper"
+  [class.tapped]="instance.tapped"
+  [class.face-down]="faceDown"
+  [class.summoning-sick]="instance.summonedThisTurn"
+  [class.selectable]="selectable"
+  [class.selected]="selected"
+  [class.attacking]="isAttacking"
+  [class.blocking]="isBlocking"
+  [class.affordable]="affordable"
+  [class.just-played]="justPlayed"
+  (click)="onClick()"
+>
+  @if (faceDown) {
+    <div class="card-back">
+      <i class="pi pi-question-circle"></i>
+    </div>
+  } @else {
+    <app-card [card]="instance.card" design="classique" imageStyle="pixel" [selected]="selected" />
+
+    <!-- Overlays -->
+    @if (isAttacking) {
+      <div class="overlay attack-overlay">
+        <i class="pi pi-bolt"></i>
+      </div>
+    }
+
+    @if (isBlocking) {
+      <div class="overlay block-overlay">
+        <i class="pi pi-shield"></i>
+      </div>
+    }
+
+    @if (instance.summonedThisTurn) {
+      <div class="overlay sick-overlay">
+        <span>Zzz</span>
+      </div>
+    }
+
+    <!-- Modified stats -->
+    @if (isJob && showStats && hasModifiers) {
+      <div class="modified-stats">
+        {{ effectiveProductivity }}/{{ effectiveResilience }}
+      </div>
+    }
+
+    <!-- Keyword badges -->
+    @if (keywords.length > 0) {
+      <div class="keyword-badges">
+        @for (kw of keywords; track kw) {
+          <span class="kw-badge" [attr.data-kw]="kw">{{ kw }}</span>
+        }
+      </div>
+    }
+  }
+</div>

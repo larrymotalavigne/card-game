@@ -1,0 +1,70 @@
+.game-board {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1a1a2e;
+  color: #eee;
+  overflow: hidden;
+  position: relative;
+}
+
+.opponent-area {
+  flex: 1;
+  min-height: 0;
+}
+
+.active-area {
+  flex: 1;
+  min-height: 0;
+}
+
+.board-divider {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .divider-info {
+    position: absolute;
+    background: #1a1a2e;
+    padding: 0.15rem 1rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
+.victory-content {
+  text-align: center;
+  padding: 1rem 0;
+
+  .victory-icon {
+    font-size: 3rem;
+    color: #f9a825;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  p {
+    color: var(--p-text-muted-color);
+  }
+}
+
+@media (max-width: 480px) {
+  .board-divider .divider-info {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .victory-content {
+    .victory-icon { font-size: 2rem; }
+    h2 { font-size: 1.2rem; }
+  }
+}

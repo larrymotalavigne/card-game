@@ -1,0 +1,17 @@
+<div class="hand-zone" [class.active]="isActive">
+  <div class="hand-cards">
+    @for (card of cards; track card.instanceId) {
+      <app-game-card
+        [instance]="card"
+        [faceDown]="!isActive"
+        [selectable]="isHiringPhase"
+        [affordable]="isAffordable(card)"
+        (cardClick)="onCardClick($event)"
+        class="hand-card"
+      />
+    }
+  </div>
+  @if (cards.length === 0) {
+    <div class="empty-hand">Main vide</div>
+  }
+</div>

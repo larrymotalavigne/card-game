@@ -29,6 +29,12 @@
   flex: 1;
 }
 
+.app-layout.fullscreen {
+  .app-main {
+    height: 100vh;
+  }
+}
+
 @media print {
   .no-print {
     display: none !important;
