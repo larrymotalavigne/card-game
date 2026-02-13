@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#cardGradient)" filter="url(#shadow)"/>
+
+  <!-- Card shape -->
+  <g transform="translate(64, 64)">
+    <!-- Back card (slightly rotated) -->
+    <rect x="-18" y="-26" width="36" height="52" rx="3"
+          fill="#ffffff" opacity="0.3"
+          transform="rotate(-10)"/>
+
+    <!-- Middle card -->
+    <rect x="-18" y="-26" width="36" height="52" rx="3"
+          fill="#ffffff" opacity="0.5"
+          transform="rotate(5)"/>
+
+    <!-- Front card -->
+    <rect x="-20" y="-28" width="40" height="56" rx="4"
+          fill="#ffffff"
+          stroke="#e5e7eb" stroke-width="1"/>
+
+    <!-- Card details -->
+    <g transform="translate(0, -10)">
+      <!-- Briefcase icon -->
+      <rect x="-8" y="-6" width="16" height="12" rx="2"
+            fill="none" stroke="url(#cardGradient)" stroke-width="2"/>
+      <rect x="-4" y="-8" width="8" height="3" rx="1"
+            fill="url(#cardGradient)"/>
+      <line x1="0" y1="-6" x2="0" y2="6"
+            stroke="url(#cardGradient)" stroke-width="2"/>
+    </g>
+
+    <!-- Star decorations -->
+    <g transform="translate(0, 15)">
+      <circle cx="-8" cy="0" r="1.5" fill="#fbbf24"/>
+      <circle cx="0" cy="0" r="1.5" fill="#fbbf24"/>
+      <circle cx="8" cy="0" r="1.5" fill="#fbbf24"/>
+    </g>
+  </g>
+</svg>

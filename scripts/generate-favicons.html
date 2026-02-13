@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Wars Favicon Generator</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f3f4f6;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    canvas {
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .preview {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin: 20px 0;
+    }
+    h1 { color: #1f2937; }
+    .note {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 12px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎴 Job Wars Favicon Generator</h1>
+    <p>Generate favicons at different sizes for your app.</p>
+
+    <div class="preview">
+      <div>
+        <h3>32×32 (favicon.ico)</h3>
+        <canvas id="canvas32" width="32" height="32"></canvas>
+        <button onclick="download(32, 'favicon-32x32.png')">Download PNG</button>
+      </div>
+
+      <div>
+        <h3>180×180 (Apple Touch Icon)</h3>
+        <canvas id="canvas180" width="180" height="180"></canvas>
+        <button onclick="download(180, 'apple-touch-icon.png')">Download PNG</button>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>📝 Instructions:</strong>
+      <ol>
+        <li>Download the PNG files using the buttons above</li>
+        <li>Convert favicon-32x32.png to favicon.ico using an online tool like:
+          <ul>
+            <li><a href="https://favicon.io/" target="_blank">favicon.io</a></li>
+            <li><a href="https://www.icoconverter.com/" target="_blank">icoconverter.com</a></li>
+          </ul>
+        </li>
+        <li>Place the files in <code>public/</code> directory</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    function drawFavicon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      const scale = size / 128;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+
+      // Draw background gradient circle
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#3b82f6');
+      gradient.addColorStop(0.5, '#8b5cf6');
+      gradient.addColorStop(1, '#ec4899');
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 * 0.95, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw card stack
+      ctx.save();
+      ctx.translate(size/2, size/2);
+
+      // Back card (rotated)
+      ctx.save();
+      ctx.rotate(-10 * Math.PI / 180);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      roundRect(ctx, -18*scale, -26*scale, 36*scale, 52*scale, 3*scale);
+      ctx.fill();
+      ctx.restore();
+
+      // Middle card
+      ctx.save();
+      ctx.rotate(5 * Math.PI / 180);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      roundRect(ctx, -18*scale, -26*scale, 36*scale, 52*scale, 3*scale);
+      ctx.fill();
+      ctx.restore();
+
+      // Front card
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1 * scale;
+      roundRect(ctx, -20*scale, -28*scale, 40*scale, 56*scale, 4*scale);
+      ctx.fill();
+      ctx.stroke();
+
+      // Briefcase icon
+      ctx.translate(0, -10*scale);
+
+      // Briefcase body
+      const briefcaseGradient = ctx.createLinearGradient(-8*scale, -6*scale, 8*scale, 6*scale);
+      briefcaseGradient.addColorStop(0, '#3b82f6');
+      briefcaseGradient.addColorStop(0.5, '#8b5cf6');
+      briefcaseGradient.addColorStop(1, '#ec4899');
+
+      ctx.strokeStyle = briefcaseGradient;
+      ctx.lineWidth = 2 * scale;
+      roundRect(ctx, -8*scale, -6*scale, 16*scale, 12*scale, 2*scale);
+      ctx.stroke();
+
+      // Briefcase handle
+      ctx.fillStyle = briefcaseGradient;
+      roundRect(ctx, -4*scale, -8*scale, 8*scale, 3*scale, 1*scale);
+      ctx.fill();
+
+      // Briefcase lock
+      ctx.strokeStyle = briefcaseGradient;
+      ctx.lineWidth = 2 * scale;
+      ctx.beginPath();
+      ctx.moveTo(0, -6*scale);
+      ctx.lineTo(0, 6*scale);
+      ctx.stroke();
+
+      // Stars
+      ctx.translate(0, 15*scale);
+      ctx.fillStyle = '#fbbf24';
+      [-8*scale, 0, 8*scale].forEach(x => {
+        ctx.beginPath();
+        ctx.arc(x, 0, 1.5*scale, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function download(size, filename) {
+      const canvas = document.getElementById(`canvas${size}`);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Draw on page load
+    window.onload = function() {
+      drawFavicon(document.getElementById('canvas32'), 32);
+      drawFavicon(document.getElementById('canvas180'), 180);
+    };
+  </script>
+</body>
+</html>
