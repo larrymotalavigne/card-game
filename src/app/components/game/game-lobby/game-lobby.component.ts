@@ -116,7 +116,11 @@ export class GameLobbyComponent implements OnInit {
   }
 
   startTutorial(): void {
-    this.gameService.startQuickGame('Vous', 'Adversaire');
+    // Use Cyber Assault starter deck — guaranteed multiple 1-cost cards
+    this.gameService.startGame('Vous', 'starter-cyber-assault', 'Adversaire', 'starter-cyber-assault');
+    // Auto-complete mulligan for both players so tutorial skips to Budget
+    this.gameService.mulligan('player1', []);
+    this.gameService.mulligan('player2', []);
     this.tutorialService.start();
     this.router.navigate(['/game/play']);
   }

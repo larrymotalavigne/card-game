@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CardInstance, GameState, GamePhase } from '../../../models/game.model';
 import { GameCardComponent } from '../game-card/game-card.component';
 import { GameService } from '../../../services/game.service';
+import { TutorialService } from '../../../services/tutorial.service';
 
 @Component({
   selector: 'app-hand-zone',
@@ -16,7 +17,10 @@ export class HandZoneComponent {
   @Input() isActive = false;
   @Input({ required: true }) state!: GameState;
 
-  constructor(private gameService: GameService) {}
+  constructor(
+    private gameService: GameService,
+    private tutorialService: TutorialService,
+  ) {}
 
   get isHiringPhase(): boolean {
     return this.state.phase === GamePhase.Hiring && this.isActive;
@@ -29,6 +33,8 @@ export class HandZoneComponent {
 
   onCardClick(instanceId: string): void {
     if (!this.isHiringPhase) return;
+    if (!this.gameService.canPlayCard(instanceId)) return;
     this.gameService.playCard(instanceId);
+    this.tutorialService.onAction();
   }
 }
