@@ -99,6 +99,7 @@ export interface GameState {
   pendingEffect: PendingEffect | null;
   winner: string | null;
   log: GameLogEntry[];
+  isAiGame: boolean;
 }
 
 // --- Keyword Detection ---

@@ -1,0 +1,229 @@
+.stats-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: var(--text-color);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    ::ng-deep .p-card {
+      height: 100%;
+
+      .p-card-body {
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .p-card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-color-secondary);
+        margin-bottom: 1rem;
+      }
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+
+      &.text-success {
+        color: var(--green-500);
+      }
+
+      &.text-warn {
+        color: var(--yellow-500);
+      }
+
+      &.text-danger {
+        color: var(--red-500);
+      }
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-color-secondary);
+    }
+  }
+
+  .decks-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    ::ng-deep .p-card {
+      .p-card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+    }
+
+    .deck-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      .deck-stat {
+        text-align: center;
+        padding: 0.5rem;
+        background: var(--surface-100);
+        border-radius: var(--border-radius);
+
+        .deck-stat-value {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: var(--primary-color);
+
+          &.text-success {
+            color: var(--green-500);
+          }
+
+          &.text-warn {
+            color: var(--yellow-500);
+          }
+
+          &.text-danger {
+            color: var(--red-500);
+          }
+        }
+
+        .deck-stat-label {
+          font-size: 0.8rem;
+          color: var(--text-color-secondary);
+          margin-top: 0.25rem;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .p-tabview {
+    .p-tabview-nav {
+      background: var(--surface-card);
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    .p-tabview-panels {
+      background: transparent;
+      padding: 1.5rem 0;
+    }
+  }
+
+  ::ng-deep .p-datatable {
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+
+      &.badge-success {
+        background: var(--green-100);
+        color: var(--green-700);
+      }
+
+      &.badge-danger {
+        background: var(--red-100);
+        color: var(--red-700);
+      }
+
+      &.badge-info {
+        background: var(--blue-100);
+        color: var(--blue-700);
+      }
+    }
+
+    .victory-row {
+      background: rgba(34, 197, 94, 0.05);
+    }
+
+    .defeat-row {
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .reputation-display {
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-color-secondary);
+      font-style: italic;
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+
+    h2 {
+      margin: 1rem 0;
+      color: var(--text-color);
+    }
+
+    p {
+      color: var(--text-color-secondary);
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-container {
+    .header {
+      flex-direction: column;
+      align-items: stretch;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-actions {
+        justify-content: stretch;
+
+        ::ng-deep .p-button {
+          flex: 1;
+        }
+      }
+    }
+
+    .overview-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      .stat-value {
+        font-size: 2rem;
+      }
+    }
+
+    .decks-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -115,6 +115,17 @@ export class GameLobbyComponent implements OnInit {
     this.router.navigate(['/game/play']);
   }
 
+  startAiGame(): void {
+    const starters = this.deckService.getStarterDecks();
+    const aiDeck = starters[Math.floor(Math.random() * starters.length)];
+    if (this.p1DeckId && this.p1Validation?.isValid) {
+      this.gameService.startAiGame(this.p1Name || 'Joueur 1', this.p1DeckId, aiDeck.id);
+    } else {
+      this.gameService.startQuickAiGame(this.p1Name || 'Joueur 1');
+    }
+    this.router.navigate(['/game/play']);
+  }
+
   startTutorial(): void {
     // Use Cyber Assault starter deck — guaranteed multiple 1-cost cards
     this.gameService.startGame('Vous', 'starter-cyber-assault', 'Adversaire', 'starter-cyber-assault');

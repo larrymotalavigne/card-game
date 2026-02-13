@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GameService } from '../../../services/game.service';
+import { AiService } from '../../../services/ai.service';
 import { GameState, GamePhase } from '../../../models/game.model';
 import { TutorialService } from '../../../services/tutorial.service';
 import { PhaseBarComponent } from '../phase-bar/phase-bar.component';
@@ -45,9 +46,13 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   private previousActivePlayer = '';
   private sub!: Subscription;
 
+  private aiActivated = false;
+  private transitionTimer: ReturnType<typeof setTimeout> | null = null;
+
   constructor(
     public gameService: GameService,
     public tutorialService: TutorialService,
+    private aiService: AiService,
     private router: Router,
   ) {}
 
@@ -55,9 +60,26 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     this.sub = this.gameService.gameState$.subscribe(state => {
       if (!state) return;
 
+      // Activate AI on first AI-game state emission
+      if (state.isAiGame && !this.aiActivated) {
+        this.aiActivated = true;
+        this.aiService.activate();
+      }
+
       // Detect player switch for transition
       if (this.previousActivePlayer && this.previousActivePlayer !== state.activePlayerId) {
         this.showTransition = true;
+
+        // In AI games, auto-dismiss transition after 1.5s when switching to AI turn
+        if (state.isAiGame && state.activePlayerId === 'player2') {
+          this.aiService.pause();
+          if (this.transitionTimer) clearTimeout(this.transitionTimer);
+          this.transitionTimer = setTimeout(() => {
+            this.showTransition = false;
+            this.aiService.resume();
+            this.transitionTimer = null;
+          }, 1500);
+        }
       }
       this.previousActivePlayer = state.activePlayerId;
 
@@ -75,6 +97,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+    this.aiService.deactivate();
+    if (this.transitionTimer) clearTimeout(this.transitionTimer);
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -82,6 +106,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     if (this.showTransition || this.showVictory) return;
     if (this.state?.phase === GamePhase.Mulligan) return;
     if (this.state?.pendingEffect) return;
+    if (this.isAiTurn) return;
     if (event.code === 'Space' && !event.repeat) {
       event.preventDefault();
       this.gameService.advancePhase();
@@ -90,6 +115,28 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   get isMulliganPhase(): boolean {
     return this.state?.phase === GamePhase.Mulligan || false;
+  }
+
+  get isAiTurn(): boolean {
+    return !!this.state?.isAiGame && this.state.activePlayerId === 'player2';
+  }
+
+  get shouldHideCombatOverlay(): boolean {
+    if (!this.state?.isAiGame) return false;
+    // Hide when AI is the attacker (AI declared attacks, now in block/damage)
+    // Human needs the overlay when AI attacks (human must block)
+    // Hide when AI is the defender (human attacked, AI auto-blocks)
+    if (this.state.activePlayerId === 'player2') {
+      // AI's turn: AI attacks. Block phase = human blocks (show overlay).
+      // Damage phase = just resolve (hide).
+      return this.state.phase === GamePhase.Work_Attack ||
+             this.state.phase === GamePhase.Work_Damage;
+    } else {
+      // Human's turn: human attacks. Block phase = AI auto-blocks (hide).
+      // Damage phase = just resolve (hide).
+      return this.state.phase === GamePhase.Work_Block ||
+             this.state.phase === GamePhase.Work_Damage;
+    }
   }
 
   onTransitionDismiss(): void {

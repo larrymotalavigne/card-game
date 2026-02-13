@@ -21,6 +21,8 @@ import { EffectTrigger } from '../models/effect.model';
 import { CardService } from './card.service';
 import { DeckService } from './deck.service';
 import { EffectService } from './effect.service';
+import { SoundService, SoundEffect } from './sound.service';
+import { StatsService } from './stats.service';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -31,6 +33,8 @@ export class GameService {
     private cardService: CardService,
     private deckService: DeckService,
     private effectService: EffectService,
+    private soundService: SoundService,
+    private statsService: StatsService,
   ) {}
 
   get state(): GameState | null {
@@ -95,12 +99,15 @@ export class GameService {
       pendingEffect: null,
       winner: null,
       log: [],
+      isAiGame: false,
     };
 
     this.stateSubject.next(gameState);
+    this.statsService.startGame(gameState.gameId);
     const firstName = firstPlayer === p1Id ? p1Name : p2Name;
     this.addLog(`La partie commence ! ${firstName} joue en premier.`);
     this.addLog(`Phase de Mulligan — chaque joueur peut remplacer des cartes.`);
+    this.soundService.play(SoundEffect.PhaseChange);
     this.emit();
   }
 
@@ -161,12 +168,146 @@ export class GameService {
       pendingEffect: null,
       winner: null,
       log: [],
+      isAiGame: false,
     };
 
     this.stateSubject.next(gameState);
+    this.statsService.startGame(gameState.gameId);
     const firstName = firstPlayer === p1Id ? p1Name : p2Name;
     this.addLog(`Partie rapide ! ${firstName} joue en premier.`);
     this.addLog(`Phase de Mulligan — chaque joueur peut remplacer des cartes.`);
+    this.soundService.play(SoundEffect.PhaseChange);
+    this.emit();
+  }
+
+  startAiGame(p1Name: string, p1DeckId: string, aiDeckId: string): void {
+    const p1Id = 'player1';
+    const p2Id = 'player2';
+
+    const p1Cards = this.expandDeckToInstances(p1DeckId, p1Id);
+    const p2Cards = this.expandDeckToInstances(aiDeckId, p2Id);
+
+    this.shuffle(p1Cards);
+    this.shuffle(p2Cards);
+
+    const p1Hand = p1Cards.splice(0, STARTING_HAND_SIZE);
+    p1Hand.forEach(c => c.zone = CardZone.Hand);
+    const p2Hand = p2Cards.splice(0, STARTING_HAND_SIZE);
+    p2Hand.forEach(c => c.zone = CardZone.Hand);
+
+    const player1: PlayerState = {
+      id: p1Id,
+      name: p1Name,
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p1Cards,
+      hand: p1Hand,
+      field: [],
+      graveyard: [],
+      deckId: p1DeckId,
+      mulliganUsed: false,
+    };
+
+    const player2: PlayerState = {
+      id: p2Id,
+      name: 'IA',
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p2Cards,
+      hand: p2Hand,
+      field: [],
+      graveyard: [],
+      deckId: aiDeckId,
+      mulliganUsed: false,
+    };
+
+    const gameState: GameState = {
+      gameId: crypto.randomUUID(),
+      player1,
+      player2,
+      activePlayerId: p1Id,
+      turnNumber: 1,
+      phase: GamePhase.Mulligan,
+      combat: null,
+      pendingEffect: null,
+      winner: null,
+      log: [],
+      isAiGame: true,
+    };
+
+    this.stateSubject.next(gameState);
+    this.statsService.startGame(gameState.gameId);
+    this.addLog(`Partie contre l'IA ! ${p1Name} joue en premier.`);
+    this.addLog(`Phase de Mulligan — choisissez vos cartes à remplacer.`);
+    this.soundService.play(SoundEffect.PhaseChange);
+    this.emit();
+  }
+
+  startQuickAiGame(p1Name: string): void {
+    const allCards = this.cardService.getAllCards();
+    const p1Id = 'player1';
+    const p2Id = 'player2';
+
+    const p1Cards = this.buildRandomDeck(allCards, p1Id);
+    const p2Cards = this.buildRandomDeck(allCards, p2Id);
+
+    this.shuffle(p1Cards);
+    this.shuffle(p2Cards);
+
+    const p1Hand = p1Cards.splice(0, STARTING_HAND_SIZE);
+    p1Hand.forEach(c => c.zone = CardZone.Hand);
+    const p2Hand = p2Cards.splice(0, STARTING_HAND_SIZE);
+    p2Hand.forEach(c => c.zone = CardZone.Hand);
+
+    const player1: PlayerState = {
+      id: p1Id,
+      name: p1Name,
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p1Cards,
+      hand: p1Hand,
+      field: [],
+      graveyard: [],
+      deckId: 'quick',
+      mulliganUsed: false,
+    };
+
+    const player2: PlayerState = {
+      id: p2Id,
+      name: 'IA',
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p2Cards,
+      hand: p2Hand,
+      field: [],
+      graveyard: [],
+      deckId: 'quick',
+      mulliganUsed: false,
+    };
+
+    const gameState: GameState = {
+      gameId: crypto.randomUUID(),
+      player1,
+      player2,
+      activePlayerId: p1Id,
+      turnNumber: 1,
+      phase: GamePhase.Mulligan,
+      combat: null,
+      pendingEffect: null,
+      winner: null,
+      log: [],
+      isAiGame: true,
+    };
+
+    this.stateSubject.next(gameState);
+    this.statsService.startGame(gameState.gameId);
+    this.addLog(`Partie rapide contre l'IA ! ${p1Name} joue en premier.`);
+    this.addLog(`Phase de Mulligan — choisissez vos cartes à remplacer.`);
+    this.soundService.play(SoundEffect.PhaseChange);
     this.emit();
   }
 
@@ -194,6 +335,7 @@ export class GameService {
 
       // Shuffle deck
       this.shuffle(player.deck);
+      this.soundService.play(SoundEffect.Shuffle);
 
       // Draw same count
       this.drawCards(player, cardInstanceIds.length);
@@ -213,6 +355,7 @@ export class GameService {
     if (state.player1.mulliganUsed && state.player2.mulliganUsed) {
       state.phase = GamePhase.Budget;
       this.addLog(`Phase : ${GamePhase.Budget}`);
+      this.soundService.play(SoundEffect.PhaseChange);
       this.executeBudgetPhase();
     } else {
       this.emit();
@@ -237,6 +380,7 @@ export class GameService {
     const nextPhase = phases[currentIdx + 1];
     state.phase = nextPhase;
     this.addLog(`Phase : ${nextPhase}`);
+    this.soundService.play(SoundEffect.PhaseChange);
 
     switch (nextPhase) {
       case GamePhase.Draw:
@@ -261,6 +405,7 @@ export class GameService {
     if (!state || state.winner) return;
     state.phase = GamePhase.End;
     this.addLog(`Phase : ${GamePhase.End}`);
+    this.soundService.play(SoundEffect.PhaseChange);
     this.emit();
   }
 
@@ -338,11 +483,13 @@ export class GameService {
       cardInstance.zone = CardZone.Graveyard;
       player.graveyard.push(cardInstance);
       this.addLog(`${player.name} joue l'événement ${cardInstance.card.name} (coût: ${cardInstance.card.cost}).`);
+      this.soundService.play(SoundEffect.CardPlay);
     } else {
       cardInstance.zone = CardZone.Field;
       cardInstance.summonedThisTurn = true;
       player.field.push(cardInstance);
       this.addLog(`${player.name} embauche ${cardInstance.card.name} (coût: ${cardInstance.card.cost}).`);
+      this.soundService.play(SoundEffect.CardPlay);
     }
 
     // Trigger effects
@@ -430,9 +577,11 @@ export class GameService {
       return c?.card.name ?? '?';
     }).join(', ');
     this.addLog(`${this.getActivePlayer().name} attaque avec : ${names}`);
+    this.soundService.play(SoundEffect.Combat);
 
     state.phase = GamePhase.Work_Block;
     this.addLog(`Phase : ${GamePhase.Work_Block}`);
+    this.soundService.play(SoundEffect.PhaseChange);
     this.emit();
   }
 
@@ -494,6 +643,7 @@ export class GameService {
 
     state.phase = GamePhase.Work_Damage;
     this.addLog(`Phase : ${GamePhase.Work_Damage}`);
+    this.soundService.play(SoundEffect.PhaseChange);
     this.emit();
   }
 
@@ -515,6 +665,7 @@ export class GameService {
         const damage = this.getEffectiveProductivity(attacker);
         defender.reputation -= damage;
         this.addLog(`${attacker.card.name} inflige ${damage} dégâts à ${defender.name}.`);
+        this.soundService.play(SoundEffect.Damage);
       } else {
         // Blocked — combat between cards
         const hasFirstStrike = this.hasKeyword(attacker, 'Première Frappe');
@@ -554,10 +705,12 @@ export class GameService {
           if (atkProd >= blkRes) {
             destroyed.push(blocker);
             this.addLog(`${attacker.card.name} détruit ${blocker.card.name}.`);
+            this.soundService.play(SoundEffect.CardDestroy);
           }
           if (blkProd >= atkRes) {
             destroyed.push(attacker);
             this.addLog(`${blocker.card.name} détruit ${attacker.card.name}.`);
+            this.soundService.play(SoundEffect.CardDestroy);
           }
         }
       }
@@ -582,6 +735,7 @@ export class GameService {
     state.combat = null;
     state.phase = GamePhase.End;
     this.addLog(`Phase : ${GamePhase.End}`);
+    this.soundService.play(SoundEffect.PhaseChange);
 
     this.checkWinCondition();
     this.emit();
@@ -710,11 +864,13 @@ export class GameService {
     if (!player) return;
     this.shuffle(player.deck);
     this.addLog(`${player.name} mélange son deck.`);
+    this.soundService.play(SoundEffect.Shuffle);
     this.emit();
   }
 
   destroyCardManual(instanceId: string): void {
     this.destroyCard(instanceId);
+    this.soundService.play(SoundEffect.CardDestroy);
     this.emit();
   }
 
@@ -818,6 +974,7 @@ export class GameService {
       card.zone = CardZone.Hand;
       player.hand.push(card);
       this.addLog(`${player.name} pioche une carte.`);
+      this.soundService.play(SoundEffect.CardDraw);
     }
   }
 
@@ -892,9 +1049,15 @@ export class GameService {
     if (state.player1.reputation <= 0) {
       state.winner = state.player2.id;
       this.addLog(`${state.player2.name} remporte la partie !`);
+      this.statsService.recordGame(state);
+      // Play defeat sound for player1, victory for player2
+      this.soundService.play(SoundEffect.Defeat);
     } else if (state.player2.reputation <= 0) {
       state.winner = state.player1.id;
       this.addLog(`${state.player1.name} remporte la partie !`);
+      this.statsService.recordGame(state);
+      // Play victory sound for player1
+      this.soundService.play(SoundEffect.Victory);
     }
   }
 

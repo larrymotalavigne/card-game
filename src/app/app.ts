@@ -18,6 +18,7 @@ export class AppComponent {
     { label: 'Galerie', icon: 'pi pi-th-large', routerLink: '/gallery' },
     { label: 'Constructeur', icon: 'pi pi-objects-column', routerLink: '/deck-builder' },
     { label: 'Jouer', icon: 'pi pi-play', routerLink: '/game' },
+    { label: 'Statistiques', icon: 'pi pi-chart-line', routerLink: '/stats' },
     { label: 'Imprimer', icon: 'pi pi-print', routerLink: '/print' },
     { label: 'Règles', icon: 'pi pi-book', routerLink: '/rules' },
   ];

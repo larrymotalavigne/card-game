@@ -14,6 +14,7 @@ import { GameService } from '../../../services/game.service';
 })
 export class MulliganOverlayComponent {
   @Input({ required: true }) state!: GameState;
+  @Input() isAiGame = false;
 
   selectedCards = new Set<string>();
   showTransition = false;
@@ -68,7 +69,10 @@ export class MulliganOverlayComponent {
 
     if (isFirstPlayer && !this.state.player2.mulliganUsed) {
       this.firstPlayerDone = true;
-      this.showTransition = true;
+      // In AI games, skip transition — AI handles player2 mulligan automatically
+      if (!this.isAiGame) {
+        this.showTransition = true;
+      }
     }
   }
 

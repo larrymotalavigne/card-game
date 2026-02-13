@@ -5,6 +5,7 @@ import { RulesComponent } from './components/rules/rules.component';
 import { DeckBuilderComponent } from './components/deck-builder/deck-builder.component';
 import { GameLobbyComponent } from './components/game/game-lobby/game-lobby.component';
 import { GameBoardComponent } from './components/game/game-board/game-board.component';
+import { StatsComponent } from './components/stats/stats.component';
 import { gameGuard } from './guards/game.guard';
 
 export const routes: Routes = [
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: 'rules', component: RulesComponent },
   { path: 'game', component: GameLobbyComponent },
   { path: 'game/play', component: GameBoardComponent, canActivate: [gameGuard], data: { hideNav: true } },
+  { path: 'stats', component: StatsComponent },
 ];

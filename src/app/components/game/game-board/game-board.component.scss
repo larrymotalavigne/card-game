@@ -57,6 +57,29 @@
   }
 }
 
+.ai-thinking-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  pointer-events: none;
+
+  i {
+    font-size: 1.1rem;
+    color: #90caf9;
+  }
+}
+
 @media (max-width: 480px) {
   .board-divider .divider-info {
     font-size: 0.65rem;

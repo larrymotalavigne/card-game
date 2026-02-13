@@ -30,17 +30,25 @@
 
     <!-- Mulligan Overlay -->
     @if (isMulliganPhase) {
-      <app-mulligan-overlay [state]="state" />
+      <app-mulligan-overlay [state]="state" [isAiGame]="!!state.isAiGame" />
     }
 
     <!-- Combat Overlay -->
-    @if (showCombatOverlay) {
+    @if (showCombatOverlay && !shouldHideCombatOverlay) {
       <app-combat-overlay [state]="state" />
     }
 
     <!-- Targeting Overlay -->
-    @if (state.pendingEffect) {
+    @if (state.pendingEffect && state.pendingEffect.ownerId !== 'player2') {
       <app-targeting-overlay [state]="state" />
+    }
+
+    <!-- AI Thinking Banner -->
+    @if (isAiTurn && !showTransition) {
+      <div class="ai-thinking-banner">
+        <i class="pi pi-spin pi-cog"></i>
+        <span>L'IA réfléchit...</span>
+      </div>
     }
 
     <!-- Tutorial Overlay -->
