@@ -17,8 +17,10 @@ import {
   STARTING_BUDGET,
   KEYWORD_PATTERNS,
 } from '../models/game.model';
+import { EffectTrigger } from '../models/effect.model';
 import { CardService } from './card.service';
 import { DeckService } from './deck.service';
+import { EffectService } from './effect.service';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -28,6 +30,7 @@ export class GameService {
   constructor(
     private cardService: CardService,
     private deckService: DeckService,
+    private effectService: EffectService,
   ) {}
 
   get state(): GameState | null {
@@ -89,6 +92,7 @@ export class GameService {
       turnNumber: 1,
       phase: GamePhase.Mulligan,
       combat: null,
+      pendingEffect: null,
       winner: null,
       log: [],
     };
@@ -154,6 +158,7 @@ export class GameService {
       turnNumber: 1,
       phase: GamePhase.Mulligan,
       combat: null,
+      pendingEffect: null,
       winner: null,
       log: [],
     };
@@ -272,6 +277,17 @@ export class GameService {
     player.budgetRemaining = player.budgetMax;
 
     this.addLog(`${player.name} a ${player.budgetMax} budget disponible.`);
+
+    // Trigger OnTurnStart for active player's field cards
+    for (const card of player.field) {
+      this.effectService.executeAutoEffects(
+        card, EffectTrigger.OnTurnStart, state,
+        (msg) => this.addLog(msg),
+        (p, n) => this.drawCards(p, n),
+        (id) => this.destroyCard(id),
+      );
+    }
+
     this.emit();
   }
 
@@ -327,6 +343,18 @@ export class GameService {
       cardInstance.summonedThisTurn = true;
       player.field.push(cardInstance);
       this.addLog(`${player.name} embauche ${cardInstance.card.name} (coût: ${cardInstance.card.cost}).`);
+    }
+
+    // Trigger effects
+    const trigger = isEventCard(cardInstance.card) ? EffectTrigger.OnCast : EffectTrigger.OnHire;
+    const pending = this.effectService.executeAutoEffects(
+      cardInstance, trigger, state,
+      (msg) => this.addLog(msg),
+      (p, n) => this.drawCards(p, n),
+      (id) => this.destroyCard(id),
+    );
+    if (pending) {
+      state.pendingEffect = pending;
     }
 
     this.checkWinCondition();
@@ -535,9 +563,18 @@ export class GameService {
       }
     }
 
-    // Move destroyed cards to graveyard
+    // Move destroyed cards to graveyard and trigger OnDestroy
     const destroyedIds = new Set(destroyed.map(c => c.instanceId));
     for (const id of destroyedIds) {
+      const card = this.findCardInstance(id);
+      if (card) {
+        this.effectService.executeAutoEffects(
+          card, EffectTrigger.OnDestroy, state,
+          (msg) => this.addLog(msg),
+          (p, n) => this.drawCards(p, n),
+          (cid) => this.destroyCard(cid),
+        );
+      }
       this.destroyCard(id);
     }
 
@@ -557,6 +594,16 @@ export class GameService {
     if (!state || state.winner) return;
 
     const player = this.getActivePlayer();
+
+    // Trigger OnTurnEnd for active player's field cards
+    for (const card of player.field) {
+      this.effectService.executeAutoEffects(
+        card, EffectTrigger.OnTurnEnd, state,
+        (msg) => this.addLog(msg),
+        (p, n) => this.drawCards(p, n),
+        (id) => this.destroyCard(id),
+      );
+    }
 
     // Clear temporary modifiers
     for (const card of player.field) {
@@ -668,6 +715,28 @@ export class GameService {
 
   destroyCardManual(instanceId: string): void {
     this.destroyCard(instanceId);
+    this.emit();
+  }
+
+  resolveTargetedEffect(targetInstanceId: string): void {
+    const state = this.state;
+    if (!state?.pendingEffect) return;
+    const next = this.effectService.resolveTargetedEffect(
+      state.pendingEffect, targetInstanceId, state,
+      (msg) => this.addLog(msg),
+      (p, n) => this.drawCards(p, n),
+      (id) => this.destroyCard(id),
+    );
+    state.pendingEffect = next;
+    this.checkWinCondition();
+    this.emit();
+  }
+
+  cancelPendingEffect(): void {
+    const state = this.state;
+    if (!state) return;
+    state.pendingEffect = null;
+    this.addLog('Effet annule.');
     this.emit();
   }
 

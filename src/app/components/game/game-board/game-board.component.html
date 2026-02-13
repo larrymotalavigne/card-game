@@ -38,6 +38,16 @@
       <app-combat-overlay [state]="state" />
     }
 
+    <!-- Targeting Overlay -->
+    @if (state.pendingEffect) {
+      <app-targeting-overlay [state]="state" />
+    }
+
+    <!-- Tutorial Overlay -->
+    @if (tutorialService.isActive) {
+      <app-tutorial-overlay [state]="state" />
+    }
+
     <!-- Turn Transition -->
     @if (showTransition) {
       <app-turn-transition

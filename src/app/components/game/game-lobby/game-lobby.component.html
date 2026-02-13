@@ -134,6 +134,13 @@
       severity="secondary"
       size="large"
     />
+    <p-button
+      label="Tutoriel"
+      icon="pi pi-question-circle"
+      (onClick)="startTutorial()"
+      severity="info"
+      size="large"
+    />
   </div>
 
   @if (deckOptions.length === 0 && starterDecks.length === 0) {

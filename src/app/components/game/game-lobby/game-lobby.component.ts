@@ -9,6 +9,7 @@ import { Card as PCard } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { DeckService } from '../../../services/deck.service';
 import { GameService } from '../../../services/game.service';
+import { TutorialService } from '../../../services/tutorial.service';
 import { Deck, DeckValidation, StarterDeck } from '../../../models/deck.model';
 
 interface DeckOption {
@@ -42,6 +43,7 @@ export class GameLobbyComponent implements OnInit {
   constructor(
     private deckService: DeckService,
     private gameService: GameService,
+    private tutorialService: TutorialService,
     private router: Router,
   ) {}
 
@@ -110,6 +112,12 @@ export class GameLobbyComponent implements OnInit {
       this.p1Name || 'Joueur 1',
       this.p2Name || 'Joueur 2',
     );
+    this.router.navigate(['/game/play']);
+  }
+
+  startTutorial(): void {
+    this.gameService.startQuickGame('Vous', 'Adversaire');
+    this.tutorialService.start();
     this.router.navigate(['/game/play']);
   }
 

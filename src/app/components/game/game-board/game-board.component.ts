@@ -4,11 +4,14 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GameService } from '../../../services/game.service';
 import { GameState, GamePhase } from '../../../models/game.model';
+import { TutorialService } from '../../../services/tutorial.service';
 import { PhaseBarComponent } from '../phase-bar/phase-bar.component';
 import { PlayerAreaComponent } from '../player-area/player-area.component';
 import { TurnTransitionComponent } from '../turn-transition/turn-transition.component';
 import { CombatOverlayComponent } from '../combat-overlay/combat-overlay.component';
 import { MulliganOverlayComponent } from '../mulligan-overlay/mulligan-overlay.component';
+import { TargetingOverlayComponent } from '../targeting-overlay/targeting-overlay.component';
+import { TutorialOverlayComponent } from '../tutorial-overlay/tutorial-overlay.component';
 import { GameLogComponent } from '../game-log/game-log.component';
 import { ManualActionsComponent } from '../manual-actions/manual-actions.component';
 import { Button } from 'primeng/button';
@@ -24,6 +27,8 @@ import { Dialog } from 'primeng/dialog';
     TurnTransitionComponent,
     CombatOverlayComponent,
     MulliganOverlayComponent,
+    TargetingOverlayComponent,
+    TutorialOverlayComponent,
     GameLogComponent,
     ManualActionsComponent,
     Button,
@@ -42,6 +47,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   constructor(
     public gameService: GameService,
+    public tutorialService: TutorialService,
     private router: Router,
   ) {}
 
@@ -60,6 +66,9 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         this.showVictory = true;
       }
 
+      // Notify tutorial of phase changes
+      this.tutorialService.onPhaseChange(state.phase);
+
       this.state = state;
     });
   }
@@ -72,6 +81,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   onKeydown(event: KeyboardEvent): void {
     if (this.showTransition || this.showVictory) return;
     if (this.state?.phase === GamePhase.Mulligan) return;
+    if (this.state?.pendingEffect) return;
     if (event.code === 'Space' && !event.repeat) {
       event.preventDefault();
       this.gameService.advancePhase();

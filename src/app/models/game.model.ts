@@ -1,4 +1,5 @@
 import { Card } from './card.model';
+import { PendingEffect } from './effect.model';
 
 // --- Constants ---
 export const STARTING_REPUTATION = 20;
@@ -95,6 +96,7 @@ export interface GameState {
   turnNumber: number;
   phase: GamePhase;
   combat: CombatState | null;
+  pendingEffect: PendingEffect | null;
   winner: string | null;
   log: GameLogEntry[];
 }
