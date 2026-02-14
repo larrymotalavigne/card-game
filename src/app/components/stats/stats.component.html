@@ -31,6 +31,8 @@
         <p-tab value="0">Vue d'ensemble</p-tab>
         <p-tab value="1">Historique des Parties</p-tab>
         <p-tab value="2">Decks</p-tab>
+        <p-tab value="3">🏆 Classement Global</p-tab>
+        <p-tab value="4">📜 Parties Récentes</p-tab>
       </p-tablist>
       <p-tabpanels>
         <p-tabpanel value="0">
@@ -154,6 +156,124 @@
             }
           }
         </div>
+        </p-tabpanel>
+
+        <p-tabpanel value="3">
+          @if (serverLoading) {
+            <div class="loading-state">
+              <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+              <p>Chargement du classement...</p>
+            </div>
+          } @else if (serverError) {
+            <div class="error-state">
+              <i class="pi pi-exclamation-triangle"></i>
+              <p>{{ serverError }}</p>
+              <p-button
+                label="Réessayer"
+                icon="pi pi-refresh"
+                (onClick)="loadServerStats()"
+              />
+            </div>
+          } @else {
+            <p-table
+              [value]="leaderboard"
+              [paginator]="true"
+              [rows]="10"
+              styleClass="p-datatable-sm"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Rang</th>
+                  <th>Joueur</th>
+                  <th>Parties</th>
+                  <th>Victoires</th>
+                  <th>Défaites</th>
+                  <th>Taux de victoire</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-player let-rowIndex="rowIndex">
+                <tr>
+                  <td>
+                    <strong>{{ rowIndex + 1 }}</strong>
+                  </td>
+                  <td>{{ player.player_name }}</td>
+                  <td>{{ player.total_games }}</td>
+                  <td class="wins">{{ player.wins }}</td>
+                  <td class="losses">{{ player.losses }}</td>
+                  <td>
+                    <span class="win-rate-badge" [class.high]="player.win_rate >= 60" [class.medium]="player.win_rate >= 40 && player.win_rate < 60">
+                      {{ player.win_rate.toFixed(1) }}%
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" class="empty-message">
+                    Aucun joueur dans le classement. Jouez des parties en ligne pour apparaître !
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
+        </p-tabpanel>
+
+        <p-tabpanel value="4">
+          @if (serverLoading) {
+            <div class="loading-state">
+              <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+              <p>Chargement des parties récentes...</p>
+            </div>
+          } @else if (serverError) {
+            <div class="error-state">
+              <i class="pi pi-exclamation-triangle"></i>
+              <p>{{ serverError }}</p>
+              <p-button
+                label="Réessayer"
+                icon="pi pi-refresh"
+                (onClick)="loadServerStats()"
+              />
+            </div>
+          } @else {
+            <p-table
+              [value]="recentMatches"
+              [paginator]="true"
+              [rows]="10"
+              styleClass="p-datatable-sm"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Joueur 1</th>
+                  <th>Joueur 2</th>
+                  <th>Vainqueur</th>
+                  <th>Tours</th>
+                  <th>Durée</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-match>
+                <tr>
+                  <td class="date-cell">{{ formatDate(match.end_time) }}</td>
+                  <td>{{ match.player1_name }}</td>
+                  <td>{{ match.player2_name }}</td>
+                  <td>
+                    <span class="winner-badge" [class.draw]="!match.winner_id">
+                      {{ getWinnerName(match) }}
+                    </span>
+                  </td>
+                  <td>{{ match.turn_count }}</td>
+                  <td>{{ getMatchDuration(match) }}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" class="empty-message">
+                    Aucune partie récente enregistrée.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
         </p-tabpanel>
       </p-tabpanels>
     </p-tabs>

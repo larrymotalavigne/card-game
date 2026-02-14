@@ -9,6 +9,16 @@ import { JUSTICE_CARDS } from './justice.cards';
 import { FINANCE_CARDS } from './finance.cards';
 import { CRAFTS_CARDS } from './crafts.cards';
 import { MILITARY_CARDS } from './military.cards';
+import { MEDIA_CARDS } from './media.cards';
+import { TRANSPORTATION_CARDS } from './transportation.cards';
+import { ENERGY_CARDS } from './energy.cards';
+import { AGRICULTURE_CARDS } from './agriculture.cards';
+import { tourismCards } from './tourism.cards';
+import { sportsCards } from './sports.cards';
+import { scienceCards } from './science.cards';
+import { artsCards } from './arts.cards';
+import { commerceCards } from './commerce.cards';
+import { environmentCards } from './environment.cards';
 import { UNIVERSAL_EVENTS } from './events.cards';
 
 export const ALL_CARDS: Card[] = [
@@ -22,5 +32,15 @@ export const ALL_CARDS: Card[] = [
   ...FINANCE_CARDS,
   ...CRAFTS_CARDS,
   ...MILITARY_CARDS,
+  ...MEDIA_CARDS,
+  ...TRANSPORTATION_CARDS,
+  ...ENERGY_CARDS,
+  ...AGRICULTURE_CARDS,
+  ...tourismCards,
+  ...sportsCards,
+  ...scienceCards,
+  ...artsCards,
+  ...commerceCards,
+  ...environmentCards,
   ...UNIVERSAL_EVENTS,
 ];

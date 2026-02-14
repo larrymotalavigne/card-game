@@ -249,7 +249,8 @@
       <p-tablist>
         <p-tab [value]="0">Liste</p-tab>
         <p-tab [value]="1">Statistiques</p-tab>
-        <p-tab [value]="2">Mes Decks</p-tab>
+        <p-tab [value]="2">Suggestions</p-tab>
+        <p-tab [value]="3">Mes Decks</p-tab>
       </p-tablist>
 
       <p-tabpanels>
@@ -330,8 +331,123 @@
           </div>
         </p-tabpanel>
 
-        <!-- Tab 3: Saved Decks -->
+        <!-- Tab 3: Suggestions -->
         <p-tabpanel [value]="2">
+          <div class="suggestions-panel" *ngIf="deckAnalysis && deckStats.totalCards > 0">
+            <!-- Deck Analysis Section -->
+            <div class="analysis-section">
+              <h3><i class="pi pi-chart-line"></i> Analyse du Deck</h3>
+
+              <!-- Strengths -->
+              <div class="analysis-card strengths" *ngIf="deckAnalysis.strengths.length > 0">
+                <h4><i class="pi pi-check-circle"></i> Points Forts</h4>
+                <ul>
+                  <li *ngFor="let strength of deckAnalysis.strengths">
+                    <i class="pi pi-thumbs-up"></i> {{ strength }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Issues -->
+              <div class="analysis-card issues" *ngIf="
+                deckAnalysis.costCurveIssues.length > 0 ||
+                deckAnalysis.domainBalance.length > 0 ||
+                deckAnalysis.typeBalance.length > 0 ||
+                deckAnalysis.missingElements.length > 0
+              ">
+                <h4><i class="pi pi-exclamation-triangle"></i> Points à Améliorer</h4>
+                <ul>
+                  <li *ngFor="let issue of deckAnalysis.costCurveIssues" class="issue-cost">
+                    <i class="pi pi-chart-line"></i> {{ issue }}
+                  </li>
+                  <li *ngFor="let issue of deckAnalysis.domainBalance" class="issue-domain">
+                    <i class="pi pi-palette"></i> {{ issue }}
+                  </li>
+                  <li *ngFor="let issue of deckAnalysis.typeBalance" class="issue-type">
+                    <i class="pi pi-box"></i> {{ issue }}
+                  </li>
+                  <li *ngFor="let issue of deckAnalysis.missingElements" class="issue-missing">
+                    <i class="pi pi-times-circle"></i> {{ issue }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Strategic Suggestions -->
+              <div class="analysis-card suggestions-strategic" *ngIf="deckAnalysis.suggestions.length > 0">
+                <h4><i class="pi pi-lightbulb"></i> Conseils Stratégiques</h4>
+                <ul>
+                  <li *ngFor="let suggestion of deckAnalysis.suggestions">
+                    <i class="pi pi-arrow-right"></i> {{ suggestion }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Card Recommendations Section -->
+            <div class="recommendations-section" *ngIf="recommendations.length > 0">
+              <h3><i class="pi pi-star"></i> Cartes Recommandées</h3>
+
+              <div class="recommendation-list">
+                <div class="recommendation-item" *ngFor="let rec of recommendations">
+                  <div class="recommendation-header">
+                    <div class="recommendation-card-info">
+                      <span class="recommendation-card-name" (click)="openDetail(rec.card)">
+                        {{ rec.card.name }}
+                      </span>
+                      <div class="recommendation-badges">
+                        <p-tag
+                          [value]="getPriorityLabel(rec.priority)"
+                          [severity]="getPrioritySeverity(rec.priority)"
+                          [rounded]="true">
+                        </p-tag>
+                        <p-tag
+                          [value]="getCategoryLabel(rec.category)"
+                          [icon]="getCategoryIcon(rec.category)"
+                          severity="secondary"
+                          [rounded]="true">
+                        </p-tag>
+                      </div>
+                    </div>
+                    <p-button
+                      icon="pi pi-plus"
+                      [rounded]="true"
+                      size="small"
+                      [disabled]="isAtMaxCopies(rec.card.id)"
+                      (onClick)="addCardToDeck(rec.card)"
+                      [pTooltip]="isAtMaxCopies(rec.card.id) ? 'Maximum de copies atteint' : 'Ajouter au deck'"
+                      tooltipPosition="left">
+                    </p-button>
+                  </div>
+                  <div class="recommendation-meta">
+                    <span class="recommendation-cost">
+                      <i class="pi pi-circle-fill" [style.color]="getDomainColor(rec.card.domain)"></i>
+                      Coût {{ rec.card.cost }} · {{ rec.card.domain }}
+                    </span>
+                    <span class="recommendation-rarity" [style.color]="getRarityColor(rec.card.rarity)">
+                      {{ rec.card.rarity }}
+                    </span>
+                  </div>
+                  <p class="recommendation-reason">{{ rec.reason }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- No recommendations -->
+            <div class="empty-suggestions" *ngIf="recommendations.length === 0 && deckAnalysis">
+              <i class="pi pi-check-circle"></i>
+              <p>Votre deck est bien construit!</p>
+              <p class="hint">Aucune recommandation majeure pour le moment.</p>
+            </div>
+          </div>
+
+          <div class="empty-deck" *ngIf="deckStats.totalCards === 0">
+            <i class="pi pi-lightbulb"></i>
+            <p>Ajoutez des cartes pour voir les suggestions.</p>
+          </div>
+        </p-tabpanel>
+
+        <!-- Tab 4: Saved Decks -->
+        <p-tabpanel [value]="3">
           <div class="saved-decks-list" *ngIf="savedDecks.length > 0">
             <div class="saved-deck-item" *ngFor="let deck of savedDecks">
               <div class="saved-deck-info">

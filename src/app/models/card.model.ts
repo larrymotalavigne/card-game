@@ -9,6 +9,16 @@ export enum Domain {
   Finance = 'Finance',
   Crafts = 'Artisanat',
   Military = 'Armée',
+  Media = 'Médias',
+  Transportation = 'Transport',
+  Energy = 'Énergie',
+  Agriculture = 'Agriculture',
+  Tourism = 'Tourisme',
+  Sports = 'Sport',
+  Science = 'Science',
+  Arts = 'Arts et Culture',
+  Commerce = 'Commerce',
+  Environment = 'Environnement',
 }
 
 export enum CardType {
@@ -77,6 +87,16 @@ export const DOMAIN_COLORS: Record<Domain, { primary: string; secondary: string;
   [Domain.Finance]: { primary: '#546e7a', secondary: '#eceff1', accent: '#37474f' },
   [Domain.Crafts]: { primary: '#795548', secondary: '#efebe9', accent: '#4e342e' },
   [Domain.Military]: { primary: '#558b2f', secondary: '#f1f8e9', accent: '#33691e' },
+  [Domain.Media]: { primary: '#d32f2f', secondary: '#ffebee', accent: '#c62828' },
+  [Domain.Transportation]: { primary: '#0277bd', secondary: '#e1f5fe', accent: '#01579b' },
+  [Domain.Energy]: { primary: '#f57c00', secondary: '#fff3e0', accent: '#e65100' },
+  [Domain.Agriculture]: { primary: '#7cb342', secondary: '#f1f8e9', accent: '#558b2f' },
+  [Domain.Tourism]: { primary: '#26c6da', secondary: '#e0f7fa', accent: '#0097a7' },
+  [Domain.Sports]: { primary: '#ec407a', secondary: '#fce4ec', accent: '#c2185b' },
+  [Domain.Science]: { primary: '#5e35b1', secondary: '#ede7f6', accent: '#4527a0' },
+  [Domain.Arts]: { primary: '#ab47bc', secondary: '#f3e5f5', accent: '#8e24aa' },
+  [Domain.Commerce]: { primary: '#ff7043', secondary: '#fbe9e7', accent: '#f4511e' },
+  [Domain.Environment]: { primary: '#43a047', secondary: '#e8f5e9', accent: '#2e7d32' },
 };
 
 export const DOMAIN_ICONS: Record<Domain, string> = {
@@ -90,6 +110,16 @@ export const DOMAIN_ICONS: Record<Domain, string> = {
   [Domain.Finance]: 'pi pi-chart-line',
   [Domain.Crafts]: 'pi pi-wrench',
   [Domain.Military]: 'pi pi-flag',
+  [Domain.Media]: 'pi pi-megaphone',
+  [Domain.Transportation]: 'pi pi-car',
+  [Domain.Energy]: 'pi pi-sun',
+  [Domain.Agriculture]: 'pi pi-home',
+  [Domain.Tourism]: 'pi pi-map-marker',
+  [Domain.Sports]: 'pi pi-circle',
+  [Domain.Science]: 'pi pi-compass',
+  [Domain.Arts]: 'pi pi-palette',
+  [Domain.Commerce]: 'pi pi-shopping-cart',
+  [Domain.Environment]: 'pi pi-leaf',
 };
 
 export const RARITY_COLORS: Record<Rarity, string> = {

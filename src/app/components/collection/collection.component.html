@@ -1,0 +1,204 @@
+<div class="collection-container">
+  <div class="collection-header">
+    <h1>Ma Collection</h1>
+
+    @if (stats) {
+      <div class="stats-summary">
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.unlockedCards }}/{{ stats.totalCards }}</div>
+          <div class="stat-label">Cartes débloquées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.percentageUnlocked.toFixed(1) }}%</div>
+          <div class="stat-label">Progression</div>
+        </div>
+      </div>
+
+      <p-progressBar
+        [value]="stats.percentageUnlocked"
+        [showValue]="false"
+        styleClass="collection-progress">
+      </p-progressBar>
+    }
+  </div>
+
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">Toutes les cartes</p-tab>
+      <p-tab value="1">Par rareté</p-tab>
+      <p-tab value="2">Récemment débloquées</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <!-- Tab 1: All Cards -->
+      <p-tabpanel value="0">
+        <!-- Filters -->
+        <div class="filters">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label>Rareté</label>
+              <p-select
+                [(ngModel)]="selectedRarity"
+                [options]="rarityOptions"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onFilterChange()"
+                styleClass="filter-dropdown">
+              </p-select>
+            </div>
+
+            <div class="filter-group">
+              <label>Domaine</label>
+              <p-select
+                [(ngModel)]="selectedDomain"
+                [options]="domainOptions"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onFilterChange()"
+                styleClass="filter-dropdown">
+              </p-select>
+            </div>
+
+            <div class="filter-group">
+              <label>Statut</label>
+              <p-select
+                [(ngModel)]="selectedStatus"
+                [options]="statusOptions"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onFilterChange()"
+                styleClass="filter-dropdown">
+              </p-select>
+            </div>
+
+            <div class="filter-group search-group">
+              <label>Recherche</label>
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="searchTerm"
+                (input)="onFilterChange()"
+                placeholder="Nom de la carte..."
+                class="search-input" />
+            </div>
+
+            <p-button
+              label="Réinitialiser"
+              icon="pi pi-times"
+              (onClick)="resetFilters()"
+              severity="secondary"
+              [outlined]="true"
+              styleClass="reset-button">
+            </p-button>
+          </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+          @for (item of filteredCards; track item.card.id) {
+            <div class="card-wrapper" [class.locked]="!item.entry.unlocked">
+              <app-card [card]="item.card"></app-card>
+
+              @if (!item.entry.unlocked) {
+                <div class="card-overlay">
+                  <i class="pi pi-lock"></i>
+                  <div class="unlock-info">
+                    <p-progressBar
+                      [value]="getProgressPercentage(item.entry)"
+                      [showValue]="false"
+                      styleClass="unlock-progress">
+                    </p-progressBar>
+                    <div class="unlock-text">
+                      {{ getProgressLabel(item.entry) }}
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @if (item.entry.unlocked && item.entry.unlockedAt) {
+                <div class="unlocked-badge">
+                  <i class="pi pi-check-circle"></i>
+                </div>
+              }
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <i class="pi pi-inbox"></i>
+              <p>Aucune carte ne correspond aux filtres</p>
+            </div>
+          }
+        </div>
+      </p-tabpanel>
+
+      <!-- Tab 2: By Rarity -->
+      <p-tabpanel value="1">
+        @if (stats) {
+          <div class="rarity-breakdown">
+            @for (rarity of [
+              { key: 'Common', label: 'Communes' },
+              { key: 'Uncommon', label: 'Peu communes' },
+              { key: 'Rare', label: 'Rares' },
+              { key: 'Legendary', label: 'Légendaires' }
+            ]; track rarity.key) {
+              <div class="rarity-section">
+                <div class="rarity-header">
+                  <h3>
+                    <p-tag
+                      [value]="rarity.label"
+                      [severity]="getRarityColor(rarity.key)">
+                    </p-tag>
+                  </h3>
+                  <span class="rarity-count">
+                    {{ getRarityStats(rarity.key).unlocked }} / {{ getRarityStats(rarity.key).total }}
+                    ({{ ((getRarityStats(rarity.key).unlocked / getRarityStats(rarity.key).total) * 100).toFixed(0) }}%)
+                  </span>
+                </div>
+                <p-progressBar
+                  [value]="(getRarityStats(rarity.key).unlocked / getRarityStats(rarity.key).total) * 100"
+                  [showValue]="false"
+                  styleClass="rarity-progress">
+                </p-progressBar>
+              </div>
+            }
+          </div>
+        }
+      </p-tabpanel>
+
+      <!-- Tab 3: Recent Unlocks -->
+      <p-tabpanel value="2">
+        @if (recentUnlocks.length > 0) {
+          <div class="recent-unlocks">
+            @for (entry of recentUnlocks; track entry.cardId) {
+              @if (getCardByEntry(entry); as card) {
+                <div class="recent-unlock-item">
+                  <div class="unlock-card-preview">
+                    <app-card [card]="card"></app-card>
+                  </div>
+                  <div class="unlock-details">
+                    <h4>{{ card.name }}</h4>
+                    <div class="unlock-meta">
+                      <p-tag
+                        [value]="getRarityLabel(card.rarity)"
+                        [severity]="getRarityColor(card.rarity)">
+                      </p-tag>
+                      <span class="unlock-date">
+                        <i class="pi pi-clock"></i>
+                        {{ formatDate(entry.unlockedAt!) }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        } @else {
+          <div class="empty-state">
+            <i class="pi pi-inbox"></i>
+            <p>Aucune carte débloquée récemment</p>
+            <p class="hint">Gagnez des parties pour débloquer de nouvelles cartes!</p>
+          </div>
+        }
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

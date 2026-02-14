@@ -1,0 +1,379 @@
+.collection-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.collection-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stats-summary {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .stat-card {
+      flex: 1;
+      background: rgba(102, 126, 234, 0.1);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #8b92b0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    }
+  }
+
+  ::ng-deep .collection-progress {
+    height: 12px;
+    border-radius: 6px;
+    background: rgba(102, 126, 234, 0.1);
+
+    .p-progressbar-value {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+  }
+}
+
+.filters {
+  background: #1e1e2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  .filter-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #8b92b0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    &.search-group {
+      flex: 1;
+      min-width: 200px;
+    }
+  }
+
+  .search-input {
+    width: 100%;
+    background: #2a2a3e;
+    border: 1px solid #3a3a4e;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    &::placeholder {
+      color: #6b7280;
+    }
+  }
+
+  ::ng-deep .filter-dropdown {
+    background: #2a2a3e;
+    border: 1px solid #3a3a4e;
+
+    .p-dropdown-label {
+      color: #fff;
+    }
+
+    &:hover {
+      border-color: #4a4a5e;
+    }
+  }
+
+  ::ng-deep .reset-button {
+    align-self: flex-end;
+  }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+
+  .card-wrapper {
+    position: relative;
+    transition: transform 0.2s, filter 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+      z-index: 10;
+    }
+
+    &.locked {
+      filter: grayscale(80%) brightness(0.6);
+
+      &:hover {
+        filter: grayscale(60%) brightness(0.7);
+      }
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      gap: 1rem;
+
+      i.pi-lock {
+        font-size: 2rem;
+        color: #fbbf24;
+      }
+
+      .unlock-info {
+        width: 100%;
+
+        .unlock-text {
+          text-align: center;
+          margin-top: 0.5rem;
+          font-size: 0.85rem;
+          color: #d1d5db;
+          line-height: 1.4;
+        }
+      }
+
+      ::ng-deep .unlock-progress {
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+
+        .p-progressbar-value {
+          background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        }
+      }
+    }
+
+    .unlocked-badge {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #10b981;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+
+      i {
+        color: white;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #8b92b0;
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+  }
+}
+
+.rarity-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 0;
+
+  .rarity-section {
+    .rarity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .rarity-count {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #8b92b0;
+      }
+    }
+
+    ::ng-deep .rarity-progress {
+      height: 16px;
+      border-radius: 8px;
+      background: rgba(102, 126, 234, 0.1);
+
+      .p-progressbar-value {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+      }
+    }
+  }
+}
+
+.recent-unlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .recent-unlock-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .unlock-card-preview {
+      flex-shrink: 0;
+      width: 125px;
+      transform: scale(0.5);
+      transform-origin: left center;
+    }
+
+    .unlock-details {
+      flex: 1;
+
+      h4 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0 0 0.75rem 0;
+        color: #fff;
+      }
+
+      .unlock-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .unlock-date {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #8b92b0;
+          font-size: 0.9rem;
+
+          i {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .collection-container {
+    padding: 1rem;
+  }
+
+  .collection-header {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .stats-summary {
+      flex-direction: column;
+    }
+  }
+
+  .filters {
+    .filter-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-group {
+      width: 100%;
+    }
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .recent-unlocks {
+    .recent-unlock-item {
+      flex-direction: column;
+      text-align: center;
+
+      .unlock-card-preview {
+        width: 150px;
+      }
+    }
+  }
+}

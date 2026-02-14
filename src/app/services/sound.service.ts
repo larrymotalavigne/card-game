@@ -11,6 +11,15 @@ export enum SoundEffect {
   ButtonClick = 'button-click',
   CardDestroy = 'card-destroy',
   Shuffle = 'shuffle',
+
+  // Multiplayer sounds
+  PlayerJoined = 'player-joined',
+  PlayerLeft = 'player-left',
+  GameStart = 'game-start',
+  OpponentAction = 'opponent-action',
+  TurnChange = 'turn-change',
+  EmoteSent = 'emote-sent',
+  ChatMessage = 'chat-message',
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +39,15 @@ export class SoundService {
     [SoundEffect.ButtonClick]: 'sounds/button-click.mp3',
     [SoundEffect.CardDestroy]: 'sounds/card-destroy.mp3',
     [SoundEffect.Shuffle]: 'sounds/shuffle.mp3',
+
+    // Multiplayer sounds (reuse existing sounds for now)
+    [SoundEffect.PlayerJoined]: 'sounds/button-click.mp3',
+    [SoundEffect.PlayerLeft]: 'sounds/card-destroy.mp3',
+    [SoundEffect.GameStart]: 'sounds/shuffle.mp3',
+    [SoundEffect.OpponentAction]: 'sounds/card-play.mp3',
+    [SoundEffect.TurnChange]: 'sounds/phase-change.mp3',
+    [SoundEffect.EmoteSent]: 'sounds/button-click.mp3',
+    [SoundEffect.ChatMessage]: 'sounds/card-draw.mp3',
   };
 
   constructor() {

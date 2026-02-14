@@ -100,6 +100,7 @@ export interface GameState {
   winner: string | null;
   log: GameLogEntry[];
   isAiGame: boolean;
+  gameStartTime?: number; // Timestamp when game actually started (after mulligan)
 }
 
 // --- Keyword Detection ---

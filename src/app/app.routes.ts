@@ -6,11 +6,13 @@ import { DeckBuilderComponent } from './components/deck-builder/deck-builder.com
 import { GameLobbyComponent } from './components/game/game-lobby/game-lobby.component';
 import { GameBoardComponent } from './components/game/game-board/game-board.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { CollectionComponent } from './components/collection/collection.component';
 import { gameGuard } from './guards/game.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'gallery', pathMatch: 'full' },
   { path: 'gallery', component: CardGalleryComponent },
+  { path: 'collection', component: CollectionComponent },
   { path: 'deck-builder', component: DeckBuilderComponent },
   { path: 'deck-builder/:deckId', component: DeckBuilderComponent },
   { path: 'print', component: PrintSheetComponent },

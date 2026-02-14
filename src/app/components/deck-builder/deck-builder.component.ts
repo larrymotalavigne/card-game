@@ -22,6 +22,11 @@ import { DeckStatsComponent } from './deck-stats/deck-stats.component';
 import { CardService } from '../../services/card.service';
 import { DeckService } from '../../services/deck.service';
 import {
+  DeckRecommendationService,
+  CardRecommendation,
+  DeckAnalysis,
+} from '../../services/deck-recommendation.service';
+import {
   Card,
   CardType,
   Domain,
@@ -126,6 +131,11 @@ export class DeckBuilderComponent implements OnInit {
   showImportDialog = false;
   importJson = '';
 
+  // Recommendations
+  deckAnalysis: DeckAnalysis | null = null;
+  recommendations: CardRecommendation[] = [];
+  showRecommendations = false;
+
   DECK_MIN_CARDS = DECK_MIN_CARDS;
   DOMAIN_COLORS = DOMAIN_COLORS;
   DOMAIN_ICONS = DOMAIN_ICONS;
@@ -134,6 +144,7 @@ export class DeckBuilderComponent implements OnInit {
   constructor(
     private cardService: CardService,
     private deckService: DeckService,
+    private recommendationService: DeckRecommendationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
@@ -299,6 +310,8 @@ export class DeckBuilderComponent implements OnInit {
   refreshDeckView() {
     if (!this.currentDeck) {
       this.deckEntries = [];
+      this.deckAnalysis = null;
+      this.recommendations = [];
       return;
     }
     this.deckEntries = this.currentDeck.entries
@@ -314,6 +327,17 @@ export class DeckBuilderComponent implements OnInit {
       .filter((e): e is DeckEntryView => e !== null);
     this.deckStats = this.deckService.computeStats(this.currentDeck);
     this.deckValidation = this.deckService.validateDeck(this.currentDeck);
+    this.refreshRecommendations();
+  }
+
+  refreshRecommendations() {
+    if (!this.currentDeck || this.currentDeck.entries.length === 0) {
+      this.deckAnalysis = null;
+      this.recommendations = [];
+      return;
+    }
+    this.deckAnalysis = this.recommendationService.analyzeDeck(this.currentDeck);
+    this.recommendations = this.recommendationService.recommendCards(this.currentDeck, 10);
   }
 
   refreshSavedDecks() {
@@ -348,6 +372,62 @@ export class DeckBuilderComponent implements OnInit {
     if (card.type === CardType.Tool) return (card as any).ability;
     if (card.type === CardType.Event) return (card as any).effect;
     return '';
+  }
+
+  getPrioritySeverity(priority: 'high' | 'medium' | 'low'): 'danger' | 'warn' | 'info' {
+    switch (priority) {
+      case 'high':
+        return 'danger';
+      case 'medium':
+        return 'warn';
+      case 'low':
+        return 'info';
+    }
+  }
+
+  getPriorityLabel(priority: 'high' | 'medium' | 'low'): string {
+    switch (priority) {
+      case 'high':
+        return 'Haute';
+      case 'medium':
+        return 'Moyenne';
+      case 'low':
+        return 'Basse';
+    }
+  }
+
+  getCategoryIcon(category: string): string {
+    switch (category) {
+      case 'synergy':
+        return 'pi-bolt';
+      case 'curve':
+        return 'pi-chart-line';
+      case 'removal':
+        return 'pi-times-circle';
+      case 'utility':
+        return 'pi-wrench';
+      case 'finisher':
+        return 'pi-star';
+      default:
+        return 'pi-circle';
+    }
+  }
+
+  getCategoryLabel(category: string): string {
+    switch (category) {
+      case 'synergy':
+        return 'Synergie';
+      case 'curve':
+        return 'Courbe';
+      case 'removal':
+        return 'Destruction';
+      case 'utility':
+        return 'Utilité';
+      case 'finisher':
+        return 'Finisseur';
+      default:
+        return category;
+    }
   }
 
   getDomainIcon(domain: Domain): string {

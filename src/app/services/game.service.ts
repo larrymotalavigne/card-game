@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Card, CardType, isJobCard, isEventCard } from '../models/card.model';
 import {
   GameState,
@@ -23,11 +23,19 @@ import { DeckService } from './deck.service';
 import { EffectService } from './effect.service';
 import { SoundService, SoundEffect } from './sound.service';
 import { StatsService } from './stats.service';
+import { CollectionService } from './collection.service';
+import { UnlockNotificationService } from './unlock-notification.service';
+import { MultiplayerService, GameAction, MessageType } from './multiplayer.service';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
   private stateSubject = new BehaviorSubject<GameState | null>(null);
   gameState$ = this.stateSubject.asObservable();
+
+  // Online multiplayer
+  private isOnlineGame = false;
+  private localPlayerId: string | null = null;
+  private multiplayerSubscription: Subscription | null = null;
 
   constructor(
     private cardService: CardService,
@@ -35,7 +43,15 @@ export class GameService {
     private effectService: EffectService,
     private soundService: SoundService,
     private statsService: StatsService,
-  ) {}
+    private collectionService: CollectionService,
+    private unlockNotificationService: UnlockNotificationService,
+    private multiplayerService: MultiplayerService,
+  ) {
+    // Subscribe to multiplayer messages
+    this.multiplayerSubscription = this.multiplayerService.messages$.subscribe(message => {
+      this.handleMultiplayerMessage(message);
+    });
+  }
 
   get state(): GameState | null {
     return this.stateSubject.value;
@@ -180,6 +196,141 @@ export class GameService {
     this.emit();
   }
 
+  // --- Online Multiplayer ---
+
+  startOnlineGame(onlineGameInfo: any): void {
+    this.isOnlineGame = true;
+    this.localPlayerId = onlineGameInfo.yourPlayerId;
+
+    const { player1, player2 } = onlineGameInfo;
+
+    // Determine which player is local
+    const isPlayer1 = this.localPlayerId === player1.id;
+    const localDeckId = isPlayer1 ? player1.deckId : player2.deckId;
+    const remoteDeckId = isPlayer1 ? player2.deckId : player1.deckId;
+
+    // Expand decks
+    const p1Cards = this.expandDeckToInstances(player1.deckId, player1.id);
+    const p2Cards = this.expandDeckToInstances(player2.deckId, player2.id);
+
+    this.shuffle(p1Cards);
+    this.shuffle(p2Cards);
+
+    const p1Hand = p1Cards.splice(0, STARTING_HAND_SIZE);
+    p1Hand.forEach(c => c.zone = CardZone.Hand);
+    const p2Hand = p2Cards.splice(0, STARTING_HAND_SIZE);
+    p2Hand.forEach(c => c.zone = CardZone.Hand);
+
+    const player1State: PlayerState = {
+      id: player1.id,
+      name: player1.name,
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p1Cards,
+      hand: p1Hand,
+      field: [],
+      graveyard: [],
+      deckId: player1.deckId,
+      mulliganUsed: false,
+    };
+
+    const player2State: PlayerState = {
+      id: player2.id,
+      name: player2.name,
+      reputation: STARTING_REPUTATION,
+      budgetMax: STARTING_BUDGET,
+      budgetRemaining: STARTING_BUDGET,
+      deck: p2Cards,
+      hand: p2Hand,
+      field: [],
+      graveyard: [],
+      deckId: player2.deckId,
+      mulliganUsed: false,
+    };
+
+    // Randomly determine first player (both clients will use same seed or server determines)
+    const firstPlayer = player1.id;
+
+    const gameState: GameState = {
+      gameId: crypto.randomUUID(),
+      player1: player1State,
+      player2: player2State,
+      activePlayerId: firstPlayer,
+      turnNumber: 1,
+      phase: GamePhase.Mulligan,
+      combat: null,
+      pendingEffect: null,
+      winner: null,
+      log: [],
+      isAiGame: false,
+    };
+
+    this.stateSubject.next(gameState);
+    this.statsService.startGame(gameState.gameId);
+    const firstName = firstPlayer === player1.id ? player1.name : player2.name;
+    this.addLog(`Partie en ligne ! ${firstName} joue en premier.`);
+    this.addLog(`Phase de Mulligan — chaque joueur peut remplacer des cartes.`);
+    this.soundService.play(SoundEffect.PhaseChange);
+    this.emit();
+  }
+
+  private handleMultiplayerMessage(message: any): void {
+    if (!this.isOnlineGame) return;
+
+    switch (message.type) {
+      case MessageType.GAME_ACTION:
+        this.applyOpponentAction(message.action);
+        break;
+      case MessageType.PLAYER_LEFT:
+        // Opponent disconnected
+        this.addLog('Votre adversaire s\'est déconnecté.');
+        break;
+    }
+  }
+
+  private applyOpponentAction(action: GameAction): void {
+    // Apply opponent's action locally
+    console.log('Applying opponent action:', action);
+
+    switch (action.type) {
+      case 'play_card':
+        this.playCard(action.data.instanceId);
+        break;
+      case 'attack':
+        this.declareAttacker(action.data.instanceId);
+        break;
+      case 'declare_blocker':
+        this.assignBlocker(action.data.blockerInstanceId, action.data.attackerInstanceId);
+        break;
+      case 'end_turn':
+        this.endTurn();
+        break;
+      case 'mulligan':
+        this.mulligan(action.playerId, action.data.cardInstanceIds);
+        break;
+      case 'keep_hand':
+        this.mulligan(action.playerId, []);
+        break;
+    }
+  }
+
+  private sendAction(actionType: string, data?: any): void {
+    if (!this.isOnlineGame || !this.localPlayerId) return;
+
+    const action: GameAction = {
+      type: actionType as any,
+      playerId: this.localPlayerId,
+      data,
+    };
+
+    this.multiplayerService.sendGameAction(action);
+  }
+
+  private isLocalPlayer(playerId: string): boolean {
+    return !this.isOnlineGame || playerId === this.localPlayerId;
+  }
+
   startAiGame(p1Name: string, p1DeckId: string, aiDeckId: string): void {
     const p1Id = 'player1';
     const p2Id = 'player2';
@@ -322,6 +473,11 @@ export class GameService {
     const player = this.getPlayer(playerId);
     if (!player || player.mulliganUsed) return;
 
+    // Send action to server if online and local player
+    if (this.isLocalPlayer(playerId)) {
+      this.sendAction(cardInstanceIds.length > 0 ? 'mulligan' : 'keep_hand', { cardInstanceIds });
+    }
+
     if (cardInstanceIds.length > 0) {
       // Return selected cards to deck
       for (const id of cardInstanceIds) {
@@ -353,6 +509,8 @@ export class GameService {
     if (!state) return;
 
     if (state.player1.mulliganUsed && state.player2.mulliganUsed) {
+      // Track when game actually starts (after mulligan)
+      state.gameStartTime = Date.now();
       state.phase = GamePhase.Budget;
       this.addLog(`Phase : ${GamePhase.Budget}`);
       this.soundService.play(SoundEffect.PhaseChange);
@@ -476,6 +634,11 @@ export class GameService {
     const cardInstance = player.hand[cardIdx];
     if (cardInstance.card.cost > player.budgetRemaining) return;
 
+    // Send action to server if online and local player
+    if (this.isLocalPlayer(player.id)) {
+      this.sendAction('play_card', { instanceId });
+    }
+
     player.budgetRemaining -= cardInstance.card.cost;
     player.hand.splice(cardIdx, 1);
 
@@ -542,6 +705,12 @@ export class GameService {
     if (!state?.combat || state.phase !== GamePhase.Work_Attack) return;
 
     if (!this.canAttack(instanceId)) return;
+
+    // Send action to server if online and local player
+    const player = this.getActivePlayer();
+    if (this.isLocalPlayer(player.id)) {
+      this.sendAction('attack', { instanceId });
+    }
 
     const existing = state.combat.attackers.findIndex(a => a.attackerInstanceId === instanceId);
     if (existing >= 0) {
@@ -610,6 +779,12 @@ export class GameService {
 
     // Portée: can't be blocked
     if (this.hasKeyword(attacker, 'Portée')) return;
+
+    // Send action to server if online and local player
+    const defender = this.getInactivePlayer();
+    if (this.isLocalPlayer(defender.id)) {
+      this.sendAction('declare_blocker', { blockerInstanceId, attackerInstanceId });
+    }
 
     // Remove existing assignment for this blocker
     state.combat.blockers = state.combat.blockers.filter(b => b.blockerInstanceId !== blockerInstanceId);
@@ -748,6 +923,11 @@ export class GameService {
     if (!state || state.winner) return;
 
     const player = this.getActivePlayer();
+
+    // Send action if this is local player in online game
+    if (this.isLocalPlayer(player.id)) {
+      this.sendAction('end_turn');
+    }
 
     // Trigger OnTurnEnd for active player's field cards
     for (const card of player.field) {
@@ -1046,18 +1226,43 @@ export class GameService {
     const state = this.state;
     if (!state) return;
 
+    let gameEnded = false;
+    let winnerId: string | null = null;
+
     if (state.player1.reputation <= 0) {
       state.winner = state.player2.id;
+      winnerId = state.player2.id;
       this.addLog(`${state.player2.name} remporte la partie !`);
       this.statsService.recordGame(state);
+      this.checkCollectionUnlocks();
       // Play defeat sound for player1, victory for player2
       this.soundService.play(SoundEffect.Defeat);
+      gameEnded = true;
     } else if (state.player2.reputation <= 0) {
       state.winner = state.player1.id;
+      winnerId = state.player1.id;
       this.addLog(`${state.player1.name} remporte la partie !`);
       this.statsService.recordGame(state);
+      this.checkCollectionUnlocks();
       // Play victory sound for player1
       this.soundService.play(SoundEffect.Victory);
+      gameEnded = true;
+    }
+
+    // Send GAME_END message to server for match history
+    if (gameEnded && this.isOnlineGame && state.gameStartTime) {
+      this.multiplayerService.sendGameEnd(winnerId, state.turnNumber, state.gameStartTime);
+    }
+  }
+
+  private checkCollectionUnlocks(): void {
+    const newUnlocks = this.collectionService.checkUnlocks();
+    if (newUnlocks.length > 0) {
+      console.log(`🎉 ${newUnlocks.length} nouvelles cartes débloquées!`, newUnlocks);
+      this.unlockNotificationService.showUnlockNotifications(newUnlocks);
+
+      const stats = this.collectionService.getCollectionStats();
+      this.unlockNotificationService.showProgressNotification(stats.unlockedCards, stats.totalCards);
     }
   }
 

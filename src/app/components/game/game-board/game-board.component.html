@@ -51,6 +51,22 @@
       </div>
     }
 
+    <!-- Opponent Disconnected Banner -->
+    @if (opponentDisconnected) {
+      <div class="disconnect-banner opponent-disconnected">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>Adversaire déconnecté - Reconnexion possible jusqu'à {{ disconnectDeadline | date:'HH:mm:ss' }}</span>
+      </div>
+    }
+
+    <!-- Reconnecting Banner -->
+    @if (isReconnecting) {
+      <div class="disconnect-banner reconnecting">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Reconnexion en cours...</span>
+      </div>
+    }
+
     <!-- Tutorial Overlay -->
     @if (tutorialService.isActive) {
       <app-tutorial-overlay [state]="state" />
@@ -70,6 +86,14 @@
 
     <!-- Manual Actions -->
     <app-manual-actions [state]="state" />
+
+    <!-- Emotes, Chat & Turn Timer (online games only) -->
+    @if (isOnlineGame) {
+      <app-emote-menu />
+      <app-emote-display />
+      <app-chat-panel />
+      <app-turn-timer [state]="state" />
+    }
 
     <!-- Victory Dialog -->
     <p-dialog
