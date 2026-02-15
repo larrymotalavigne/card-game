@@ -15,6 +15,22 @@
   <!-- Theme -->
   <meta name="theme-color" content="#3b82f6">
   <meta name="description" content="Job Wars - Un jeu de cartes stratégique sur le thème des métiers. Construisez votre équipe et affrontez vos adversaires !"
+
+  <!-- Migration script: Clear old collection data if version mismatch -->
+  <script>
+    (function() {
+      try {
+        const version = localStorage.getItem('jobwars-collection-version');
+        if (!version || parseInt(version) < 2) {
+          console.log('Migrating to new collection format...');
+          localStorage.removeItem('jobwars-collection');
+          localStorage.setItem('jobwars-collection-version', '2');
+        }
+      } catch (e) {
+        console.warn('Migration script error:', e);
+      }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
