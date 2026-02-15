@@ -3,7 +3,7 @@ import { Card, Domain, Rarity, CardType } from '../models/card.model';
 export const environmentCards: Card[] = [
   // Common (1-30)
   {
-    id: 'en-001',
+    id: 'ev-001',
     name: 'Bénévole Écologiste',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -16,7 +16,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-001.jpg'
   },
   {
-    id: 'en-002',
+    id: 'ev-002',
     name: 'Agent de Tri des Déchets',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -29,7 +29,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-002.jpg'
   },
   {
-    id: 'en-003',
+    id: 'ev-003',
     name: 'Garde Forestier Junior',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -42,7 +42,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-003.jpg'
   },
   {
-    id: 'en-004',
+    id: 'ev-004',
     name: 'Technicien en Énergies Renouvelables',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -55,7 +55,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-004.jpg'
   },
   {
-    id: 'en-005',
+    id: 'ev-005',
     name: 'Éducateur Environnemental',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -68,7 +68,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-005.jpg'
   },
   {
-    id: 'en-006',
+    id: 'ev-006',
     name: 'Jardinier Écologique',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -81,7 +81,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-006.jpg'
   },
   {
-    id: 'en-007',
+    id: 'ev-007',
     name: 'Agent de Nettoyage des Plages',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -94,7 +94,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-007.jpg'
   },
   {
-    id: 'en-008',
+    id: 'ev-008',
     name: 'Installateur de Panneaux Solaires',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -107,7 +107,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-008.jpg'
   },
   {
-    id: 'en-009',
+    id: 'ev-009',
     name: 'Technicien de Compostage',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -120,7 +120,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-009.jpg'
   },
   {
-    id: 'en-010',
+    id: 'ev-010',
     name: 'Agent de Protection de la Faune',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -133,7 +133,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-010.jpg'
   },
   {
-    id: 'en-011',
+    id: 'ev-011',
     name: 'Responsable de Recyclage',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -146,7 +146,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-011.jpg'
   },
   {
-    id: 'en-012',
+    id: 'ev-012',
     name: 'Technicien Éolien',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -159,7 +159,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-012.jpg'
   },
   {
-    id: 'en-013',
+    id: 'ev-013',
     name: 'Animateur Nature',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -172,7 +172,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-013.jpg'
   },
   {
-    id: 'en-014',
+    id: 'ev-014',
     name: 'Agent de Traitement des Eaux',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -185,7 +185,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-014.jpg'
   },
   {
-    id: 'en-015',
+    id: 'ev-015',
     name: 'Biologiste de Terrain Junior',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -198,7 +198,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-015.jpg'
   },
   {
-    id: 'en-016',
+    id: 'ev-016',
     name: 'Technicien en Permaculture',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -211,7 +211,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-016.jpg'
   },
   {
-    id: 'en-017',
+    id: 'ev-017',
     name: 'Agent de Sensibilisation',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -224,7 +224,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-017.jpg'
   },
   {
-    id: 'en-018',
+    id: 'ev-018',
     name: 'Collecteur de Données Environnementales',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -237,7 +237,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-018.jpg'
   },
   {
-    id: 'en-019',
+    id: 'ev-019',
     name: 'Technicien Géothermie',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -250,7 +250,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-019.jpg'
   },
   {
-    id: 'en-020',
+    id: 'ev-020',
     name: 'Agent de Reforestation',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -263,7 +263,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-020.jpg'
   },
   {
-    id: 'en-021',
+    id: 'ev-021',
     name: 'Technicien Biocarburant',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -276,7 +276,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-021.jpg'
   },
   {
-    id: 'en-022',
+    id: 'ev-022',
     name: 'Garde-Chasse',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -289,7 +289,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-022.jpg'
   },
   {
-    id: 'en-023',
+    id: 'ev-023',
     name: 'Agent de Lutte Anti-Pollution',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -302,7 +302,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-023.jpg'
   },
   {
-    id: 'en-024',
+    id: 'ev-024',
     name: 'Technicien Hydrogène Vert',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -315,7 +315,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-024.jpg'
   },
   {
-    id: 'en-025',
+    id: 'ev-025',
     name: 'Agent de Conservation Marine',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -328,7 +328,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-025.jpg'
   },
   {
-    id: 'en-026',
+    id: 'ev-026',
     name: 'Technicien Biomasse',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -341,7 +341,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-026.jpg'
   },
   {
-    id: 'en-027',
+    id: 'ev-027',
     name: 'Responsable Zéro Déchet',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -354,7 +354,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-027.jpg'
   },
   {
-    id: 'en-028',
+    id: 'ev-028',
     name: 'Agent de Mesure Qualité de l\'Air',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -367,7 +367,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-028.jpg'
   },
   {
-    id: 'en-029',
+    id: 'ev-029',
     name: 'Technicien en Isolation Écologique',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -380,7 +380,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-029.jpg'
   },
   {
-    id: 'en-030',
+    id: 'ev-030',
     name: 'Agent de Protection des Sols',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -395,7 +395,7 @@ export const environmentCards: Card[] = [
 
   // Uncommon (31-50)
   {
-    id: 'en-031',
+    id: 'ev-031',
     name: 'Ingénieur en Énergies Renouvelables',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -408,7 +408,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-031.jpg'
   },
   {
-    id: 'en-032',
+    id: 'ev-032',
     name: 'Responsable de Réserve Naturelle',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -421,7 +421,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-032.jpg'
   },
   {
-    id: 'en-033',
+    id: 'ev-033',
     name: 'Écologue Confirmé',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -434,7 +434,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-033.jpg'
   },
   {
-    id: 'en-034',
+    id: 'ev-034',
     name: 'Directeur de Centre de Recyclage',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -447,7 +447,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-034.jpg'
   },
   {
-    id: 'en-035',
+    id: 'ev-035',
     name: 'Responsable RSE',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -460,7 +460,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-035.jpg'
   },
   {
-    id: 'en-036',
+    id: 'ev-036',
     name: 'Ingénieur en Traitement des Eaux',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -473,7 +473,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-036.jpg'
   },
   {
-    id: 'en-037',
+    id: 'ev-037',
     name: 'Chef de Projet Éolien',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -486,7 +486,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-037.jpg'
   },
   {
-    id: 'en-038',
+    id: 'ev-038',
     name: 'Responsable Biodiversité',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -499,7 +499,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-038.jpg'
   },
   {
-    id: 'en-039',
+    id: 'ev-039',
     name: 'Expert en Économie Circulaire',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -512,7 +512,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-039.jpg'
   },
   {
-    id: 'en-040',
+    id: 'ev-040',
     name: 'Directeur de Parc Solaire',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -525,7 +525,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-040.jpg'
   },
   {
-    id: 'en-041',
+    id: 'ev-041',
     name: 'Responsable de Programme de Reforestation',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -538,7 +538,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-041.jpg'
   },
   {
-    id: 'en-042',
+    id: 'ev-042',
     name: 'Ingénieur Hydrogène Vert',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -551,7 +551,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-042.jpg'
   },
   {
-    id: 'en-043',
+    id: 'ev-043',
     name: 'Responsable de Station d\'Épuration',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -564,7 +564,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-043.jpg'
   },
   {
-    id: 'en-044',
+    id: 'ev-044',
     name: 'Expert en Permaculture',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -577,7 +577,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-044.jpg'
   },
   {
-    id: 'en-045',
+    id: 'ev-045',
     name: 'Directeur de Centre de Compostage',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -590,7 +590,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-045.jpg'
   },
   {
-    id: 'en-046',
+    id: 'ev-046',
     name: 'Responsable Transition Énergétique',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -603,7 +603,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-046.jpg'
   },
   {
-    id: 'en-047',
+    id: 'ev-047',
     name: 'Ingénieur Géothermie',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -616,7 +616,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-047.jpg'
   },
   {
-    id: 'en-048',
+    id: 'ev-048',
     name: 'Responsable de Programme Anti-Plastique',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -629,7 +629,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-048.jpg'
   },
   {
-    id: 'en-049',
+    id: 'ev-049',
     name: 'Directeur de Ferme Verticale',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -642,7 +642,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-049.jpg'
   },
   {
-    id: 'en-050',
+    id: 'ev-050',
     name: 'Expert en Captage Carbone',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -657,7 +657,7 @@ export const environmentCards: Card[] = [
 
   // Rare (51-80)
   {
-    id: 'en-051',
+    id: 'ev-051',
     name: 'Directeur de Parc National',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -670,7 +670,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-051.jpg'
   },
   {
-    id: 'en-052',
+    id: 'ev-052',
     name: 'Président d\'ONG Environnementale',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -683,7 +683,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-052.jpg'
   },
   {
-    id: 'en-053',
+    id: 'ev-053',
     name: 'Directeur National des Énergies Renouvelables',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -696,7 +696,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-053.jpg'
   },
   {
-    id: 'en-054',
+    id: 'ev-054',
     name: 'Expert Climat GIEC',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -709,7 +709,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-054.jpg'
   },
   {
-    id: 'en-055',
+    id: 'ev-055',
     name: 'Directeur de Programme de Conservation',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -722,7 +722,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-055.jpg'
   },
   {
-    id: 'en-056',
+    id: 'ev-056',
     name: 'PDG d\'Entreprise Solaire',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -735,7 +735,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-056.jpg'
   },
   {
-    id: 'en-057',
+    id: 'ev-057',
     name: 'Directeur de Réserve de Biosphère UNESCO',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -748,7 +748,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-057.jpg'
   },
   {
-    id: 'en-058',
+    id: 'ev-058',
     name: 'Président de Groupe Éolien',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -761,7 +761,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-058.jpg'
   },
   {
-    id: 'en-059',
+    id: 'ev-059',
     name: 'Directeur de Programme Océans',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -774,7 +774,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-059.jpg'
   },
   {
-    id: 'en-060',
+    id: 'ev-060',
     name: 'Expert en Fusion Nucléaire Propre',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -787,7 +787,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-060.jpg'
   },
   {
-    id: 'en-061',
+    id: 'ev-061',
     name: 'Directeur de Politique Climatique',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -800,7 +800,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-061.jpg'
   },
   {
-    id: 'en-062',
+    id: 'ev-062',
     name: 'PDG d\'Entreprise Hydrogène Vert',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -813,7 +813,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-062.jpg'
   },
   {
-    id: 'en-063',
+    id: 'ev-063',
     name: 'Responsable de Programme de Reforestation Mondiale',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -826,7 +826,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-063.jpg'
   },
   {
-    id: 'en-064',
+    id: 'ev-064',
     name: 'Directeur de Centre de Recherche Climat',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -839,7 +839,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-064.jpg'
   },
   {
-    id: 'en-065',
+    id: 'ev-065',
     name: 'Président de Fonds Vert International',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -852,7 +852,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-065.jpg'
   },
   {
-    id: 'en-066',
+    id: 'ev-066',
     name: 'Directeur de Programme Économie Circulaire',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -865,7 +865,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-066.jpg'
   },
   {
-    id: 'en-067',
+    id: 'ev-067',
     name: 'PDG de Groupe de Recyclage',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -878,7 +878,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-067.jpg'
   },
   {
-    id: 'en-068',
+    id: 'ev-068',
     name: 'Directeur de Programme Captage Carbone',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -891,7 +891,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-068.jpg'
   },
   {
-    id: 'en-069',
+    id: 'ev-069',
     name: 'Président d\'Alliance pour la Biodiversité',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -904,7 +904,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-069.jpg'
   },
   {
-    id: 'en-070',
+    id: 'ev-070',
     name: 'Directeur de Ville Durable',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -917,7 +917,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-070.jpg'
   },
   {
-    id: 'en-071',
+    id: 'ev-071',
     name: 'PDG de Consortium Géothermie',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -930,7 +930,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-071.jpg'
   },
   {
-    id: 'en-072',
+    id: 'ev-072',
     name: 'Responsable de Programme Zéro Émission',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -943,7 +943,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-072.jpg'
   },
   {
-    id: 'en-073',
+    id: 'ev-073',
     name: 'Directeur de Ferme Solaire Spatiale',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -956,7 +956,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-073.jpg'
   },
   {
-    id: 'en-074',
+    id: 'ev-074',
     name: 'Président de Coalition Océans',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -969,7 +969,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-074.jpg'
   },
   {
-    id: 'en-075',
+    id: 'ev-075',
     name: 'Directeur de Programme Biomimétisme',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -982,7 +982,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-075.jpg'
   },
   {
-    id: 'en-076',
+    id: 'ev-076',
     name: 'PDG de Réseau Smart Grid Vert',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -995,7 +995,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-076.jpg'
   },
   {
-    id: 'en-077',
+    id: 'ev-077',
     name: 'Directeur de Programme Permaculture Mondiale',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1008,7 +1008,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-077.jpg'
   },
   {
-    id: 'en-078',
+    id: 'ev-078',
     name: 'Président de Mouvement Zéro Déchet',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1021,7 +1021,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-078.jpg'
   },
   {
-    id: 'en-079',
+    id: 'ev-079',
     name: 'Directeur de Ville Autonome en Énergie',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1034,7 +1034,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-079.jpg'
   },
   {
-    id: 'en-080',
+    id: 'ev-080',
     name: 'PDG de Consortium Fusion Propre',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1049,7 +1049,7 @@ export const environmentCards: Card[] = [
 
   // Legendary (81-100)
   {
-    id: 'en-081',
+    id: 'ev-081',
     name: 'Greta Thunberg',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1062,7 +1062,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-081.jpg'
   },
   {
-    id: 'en-082',
+    id: 'ev-082',
     name: 'Al Gore',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1075,7 +1075,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-082.jpg'
   },
   {
-    id: 'en-083',
+    id: 'ev-083',
     name: 'Wangari Maathai',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1088,7 +1088,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-083.jpg'
   },
   {
-    id: 'en-084',
+    id: 'ev-084',
     name: 'Jacques Cousteau',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1101,7 +1101,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-084.jpg'
   },
   {
-    id: 'en-085',
+    id: 'ev-085',
     name: 'David Attenborough',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1114,7 +1114,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-085.jpg'
   },
   {
-    id: 'en-086',
+    id: 'ev-086',
     name: 'Jane Goodall',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1127,7 +1127,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-086.jpg'
   },
   {
-    id: 'en-087',
+    id: 'ev-087',
     name: 'Rachel Carson',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1140,7 +1140,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-087.jpg'
   },
   {
-    id: 'en-088',
+    id: 'ev-088',
     name: 'Directeur du PNUE',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1153,7 +1153,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-088.jpg'
   },
   {
-    id: 'en-089',
+    id: 'ev-089',
     name: 'Elon Musk (Tesla/SolarCity)',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1166,7 +1166,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-089.jpg'
   },
   {
-    id: 'en-090',
+    id: 'ev-090',
     name: 'Sylvia Earle',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1179,7 +1179,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-090.jpg'
   },
   {
-    id: 'en-091',
+    id: 'ev-091',
     name: 'Président de la COP Climat',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1192,7 +1192,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-091.jpg'
   },
   {
-    id: 'en-092',
+    id: 'ev-092',
     name: 'Chico Mendes',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1205,7 +1205,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-092.jpg'
   },
   {
-    id: 'en-093',
+    id: 'ev-093',
     name: 'Nicolas Hulot',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1218,7 +1218,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-093.jpg'
   },
   {
-    id: 'en-094',
+    id: 'ev-094',
     name: 'Vandana Shiva',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1231,7 +1231,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-094.jpg'
   },
   {
-    id: 'en-095',
+    id: 'ev-095',
     name: 'Paul Watson',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1244,7 +1244,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-095.jpg'
   },
   {
-    id: 'en-096',
+    id: 'ev-096',
     name: 'Secrétaire Général de l\'ONU Environnement',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1257,7 +1257,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-096.jpg'
   },
   {
-    id: 'en-097',
+    id: 'ev-097',
     name: 'Bill McKibben',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1270,7 +1270,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-097.jpg'
   },
   {
-    id: 'en-098',
+    id: 'ev-098',
     name: 'Yvon Chouinard',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1283,7 +1283,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-098.jpg'
   },
   {
-    id: 'en-099',
+    id: 'ev-099',
     name: 'Président du GIEC',
     domain: Domain.Environment,
     type: CardType.Job,
@@ -1296,7 +1296,7 @@ export const environmentCards: Card[] = [
     image: 'environment/en-099.jpg'
   },
   {
-    id: 'en-100',
+    id: 'ev-100',
     name: 'Architecte du Futur Durable',
     domain: Domain.Environment,
     type: CardType.Job,
