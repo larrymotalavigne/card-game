@@ -18,4 +18,4 @@ FROM nginx:latest
 RUN apt-get update && apt-get -y upgrade && apt-get clean && apt-get autoclean -y && rm -rf /var/lib/apt/list/*
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=base /usr/src/app/dist/card-game/browser /usr/share/nginx/html
+COPY --from=base /usr/src/app/dist/job-wars/browser /usr/share/nginx/html

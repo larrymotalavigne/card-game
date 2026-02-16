@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "card-game": {
+    "job-wars": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -69,10 +69,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "card-game:build:production"
+              "buildTarget": "job-wars:build:production"
             },
             "development": {
-              "buildTarget": "card-game:build:development"
+              "buildTarget": "job-wars:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -112,7 +112,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.OWNER }}/card-game
+          images: ${{ env.REGISTRY }}/${{ env.OWNER }}/job-wars
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -140,7 +140,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: production
-      url: https://card-game.atomstudios.fr
+      url: https://job-wars.atomstudios.fr
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -153,7 +153,7 @@ jobs:
           username: ${{ secrets.UNRAID_SSH_USER }}
           key: ${{ secrets.UNRAID_SSH_KEY }}
           source: "docker-compose.prod.yml"
-          target: "/srv/card-game/"
+          target: "/srv/job-wars/"
           strip_components: 0
 
       - name: Deploy with Docker Compose via SSH
@@ -164,7 +164,7 @@ jobs:
           username: ${{ secrets.UNRAID_SSH_USER }}
           key: ${{ secrets.UNRAID_SSH_KEY }}
           script: |
-            cd /srv/card-game/
+            cd /srv/job-wars/
 
             # Set environment variables
             export GHCR_OWNER=larrymotalavigne
@@ -211,7 +211,7 @@ jobs:
           username: ${{ secrets.UNRAID_SSH_USER }}
           key: ${{ secrets.UNRAID_SSH_KEY }}
           script: |
-            cd /srv/card-game/
+            cd /srv/job-wars/
 
             # Wait for service to stabilize
             echo "Waiting for service to stabilize..."
@@ -219,12 +219,12 @@ jobs:
 
             # Check if container is running
             echo "Checking if container is running..."
-            if docker ps --format '{{.Names}}' | grep -q '^card-game$'; then
-              CONTAINER_STATUS=$(docker inspect --format='{{.State.Status}}' card-game 2>/dev/null || echo "not_found")
+            if docker ps --format '{{.Names}}' | grep -q '^job-wars$'; then
+              CONTAINER_STATUS=$(docker inspect --format='{{.State.Status}}' job-wars 2>/dev/null || echo "not_found")
               echo "✅ Container is running (status: $CONTAINER_STATUS)"
             else
               echo "❌ Container is not running"
-              docker logs card-game --tail 50
+              docker logs job-wars --tail 50
               exit 1
             fi
 
@@ -239,7 +239,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Deployment to production completed successfully"
-          echo "URL: https://card-game.atomstudios.fr"
+          echo "URL: https://job-wars.atomstudios.fr"
 
       - name: Notify deployment failure
         if: failure()

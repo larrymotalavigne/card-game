@@ -92,7 +92,7 @@ npm start
    Deploy to Vercel, Netlify, or any static host:
    ```bash
    npm run build
-   # Upload dist/card-game folder
+   # Upload dist/job-wars folder
    ```
 
 ---

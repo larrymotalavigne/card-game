@@ -1,12 +1,12 @@
 services:
-  card-game:
-    image: ghcr.io/larrymotalavigne/card-game:latest
-    container_name: card-game
+  job-wars:
+    image: ghcr.io/larrymotalavigne/job-wars:latest
+    container_name: job-wars
     restart: unless-stopped
     networks:
-      - card-game
+      - job-wars
 
 networks:
-  card-game:
-    name: card-game
+  job-wars:
+    name: job-wars
     driver: bridge
