@@ -64,6 +64,7 @@ export class CardGalleryComponent implements OnInit {
   selectedTypes: CardType[] = [];
   selectedRarities: Rarity[] = [];
   costRange: number[] = [0, 7];
+  maxCost = 7;
   searchText = '';
 
   constructor(
@@ -73,7 +74,8 @@ export class CardGalleryComponent implements OnInit {
 
   ngOnInit() {
     this.allCards = this.cardService.getAllCards();
-    this.costRange = [0, this.cardService.getMaxCost()];
+    this.maxCost = this.cardService.getMaxCost();
+    this.costRange = [0, this.maxCost];
     this.applyFilters();
   }
 
